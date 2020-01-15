@@ -42,7 +42,7 @@ const SignIn = ({ history }) => {
     const classes = useStyles();
     const context = useContext(AuthContext)
 
-    const url = "http://localhost:3001/register";
+    const url = "http://localhost:3001/login";
 
     //const [isLoggedIn, setIsLoggedIn] = useState(false);
     
@@ -52,10 +52,11 @@ const SignIn = ({ history }) => {
     const handleSubmit = async e => {
       e.preventDefault();
       try {
-        const result = await axios.post(url, { name: 'Jake', email, password });
-        //console.log(result.data);
-        //setIsLoggedIn(true);
-        context.toggleAuth();
+        //const result = await axios.post(url, { name: 'Jake', email, password }); //for registering
+        const result = await axios.post(url, { email, password });
+        console.log('response received in sign in page ', result.data);
+        context.setAuthenticated(true);
+        context.setUser(result.data);
         //history.push('/main');
 
       }
