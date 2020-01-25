@@ -38,6 +38,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const saveTokenInSession = token => {
+    window.sessionStorage.setItem('token',token )
+}
+
 const SignIn = ({ history }) => {
     const classes = useStyles();
     const context = useContext(AuthContext)
@@ -55,13 +59,21 @@ const SignIn = ({ history }) => {
         //const result = await axios.post(url, { name: 'Jake', email, password }); //for registering
         const result = await axios.post(url, { email, password });
         console.log('response received in sign in page ', result.data);
-        context.setAuthenticated(true);
-        context.setUser(result.data);
+        if (result.data && result.data.success) {
+          context.setAuthenticated(true);
+          //context.setUser(result.data);
+          saveTokenInSession(result.data.token)
+        }
+        else {
+          //TODO: password/email didn't match
+          context.setAuthenticated(false);
+        }
         //history.push('/main');
 
       }
       catch(err) {
-        'response' in err ? console.log(err.response.data.message) : console.log(err);
+        console.log(err)
+        //'response' in err ? console.log(err.response.data.message) : console.log(err);
       }
     }
     

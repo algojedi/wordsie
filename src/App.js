@@ -15,12 +15,21 @@ function App() {
   const context = useContext(AuthContext);
 
   useEffect(() => {
-    const url = "http://localhost:3001/checkauth";
+    const token = window.sessionStorage.getItem('token');
     
-    axios.get(url)
+    const url = "http://localhost:3001/login"; //TODO: change when deploying
+    
+    if (token) {
+      fetch(url, {
+        method: 'post',
+        headers: {
+          'Content-type:': 'application/json',
+          'Authorization': token
+        }
+      })
       .then(resp => { 
         console.log('resp received by useEffect', resp);
-        if (resp.data) {
+        if (resp.data) { //TODO: this needs to fetch user from another endpoint
           context.setAuthenticated(true);
           context.setUser(resp.data);
           //console.log('user set from useEffect: ', resp.data);
@@ -32,7 +41,8 @@ function App() {
       .catch(err => {
         console.log(err);
         //'response' in err ? console.log(err.response.data.message) : 
-      })  
+      })
+    }  
   },[])
   
   console.log('context authenticated?: ', context.authenticated);
