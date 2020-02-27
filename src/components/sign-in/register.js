@@ -40,9 +40,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const saveTokenInSession = token => {
-  window.sessionStorage.setItem("token", token);
-};
+// const saveTokenInSession = token => {
+//   window.sessionStorage.setItem("token", token);
+// };
 
 const Register = ({ history }) => {
   const classes = useStyles();
@@ -66,7 +66,7 @@ const Register = ({ history }) => {
       console.log("response received in sign in page ", result);
       //if (result.data && result.data.success) {
       if (result.status === 200) {
-        context.setAuthenticated(true);
+        //TODO: context.setAuthenticated(true);
         history.push("/main");
         //context.setUser(result.data);
         //TODO : so far only sign in page receiving tokens ....saveTokenInSession(result.data.token)
@@ -99,7 +99,7 @@ const Register = ({ history }) => {
                 variant="outlined"
                 required
                 fullWidth
-                id="name"
+                // id="name"
                 label="Name"
                 value={name}
                 onChange={e => setName(e.target.value)}
@@ -122,7 +122,7 @@ const Register = ({ history }) => {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
+                // id="email"
                 value={email}
                 label="Email Address"
                 name="email"
@@ -138,7 +138,7 @@ const Register = ({ history }) => {
                 name="password"
                 label="Password"
                 type="password"
-                id="password"
+                // id="password"
                 onChange={e => setPassword(e.target.value)}
                 value={password}
                 autoComplete="current-password"

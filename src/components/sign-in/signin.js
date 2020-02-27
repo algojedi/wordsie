@@ -43,117 +43,132 @@ const saveTokenInSession = token => {
 }
 
 const SignIn = ({ history }) => {
-    const classes = useStyles();
-    const context = useContext(AuthContext)
+  const classes = useStyles();
+  const context = useContext(AuthContext);
 
-    const url = "http://localhost:3001/login";
+  const url = "http://localhost:3001/login";
+  const getUsrUrl = "http://localhost:3001/profile/"; //TODO: change when deploying
 
-    //const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handleSubmit = async e => {
-      e.preventDefault();
-      try {
-        //const result = await axios.post(url, { name: 'Jake', email, password }); //for registering
-        const result = await axios.post(url, { email, password });
-        console.log('response received in sign in page ', result.data);
-        if (result.data && result.data.success) {
-          context.setAuthenticated(true);
-          //context.setUser(result.data);
-          saveTokenInSession(result.data.token)
-        }
-        else {
-          //TODO: password/email didn't match
-          context.setAuthenticated(false);
-        }
-        //history.push('/main');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const result = await axios.post(url, { email, password });
+      console.log("response received in sign in page ", result.data);
+      if (result.data && result.data.success) {
+        saveTokenInSession(result.data.token);
       }
-      catch(err) {
-        console.log(err)
-        //'response' in err ? console.log(err.response.data.message) : console.log(err);
-      }
+      /////--- use id to load user ---
+      fetch(getUsrUrl + result.data.userId, {
+        //fetch is working fine
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: result.data.token
+        }
+      })
+        .then(data => data.json())
+        .then(user => {
+          console.log("user from fetch in sign query to profile endpt", user);
+          if (user && user.email) {
+            context.setUser(user);
+            context.setAuthenticated(true); //this will route to /main because of route condition in app.js
+          } else {
+            context.setAuthenticated(false);
+            console.log("auth denied in sign in, no profile in db?");
+            //TODO: password/email didn't match
+          }
+        })
+
+        .catch(err => {
+          console.log("error when trying to fetch from login: ", err);
+        });
+
+    } catch (err) {
+      console.log(err);
+      //'response' in err ? console.log(err.response.data.message) : console.log(err);
     }
-    
-    return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              // onClick={handleSubmit}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                {/* <Link href="#" variant="body2">
+  };
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            // id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            // id="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            // onClick={handleSubmit}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              {/* <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link> */}
 
-                {/* <Link variant="body2" component={Register} to="/register" children='Register' /> */}
-                <Link variant="body2" component={RouterLink} to="/register">
-                  Register
-                </Link>
-
-  
-              </Grid>
+              {/* <Link variant="body2" component={Register} to="/register" children='Register' /> */}
+              <Link variant="body2" component={RouterLink} to="/register">
+                Register
+              </Link>
             </Grid>
-          </form>
-        </div>
-        <Box mt={8}>
-          <Copyright />
-        </Box>
-      </Container>
-    );
-}
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
+};
 
 export default SignIn;
