@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+//a component to display word information after user searches
+//for a word definition from the main search bar
 const WordDefinition = ({wordInformation}) => {
     //console.log('props from wordDefin component') ; 
     //console.log(wordInformation);
