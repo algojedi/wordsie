@@ -47,7 +47,6 @@ const useStyles = makeStyles(theme => ({
 const Register = ({ history }) => {
   const classes = useStyles();
 
-  //const SignIn = ({ history }) => {
   const context = useContext(AuthContext);
 
   const url = "http://localhost:3001/register";
@@ -64,6 +63,8 @@ const Register = ({ history }) => {
       //const result = await axios.post(url, { name: 'Jake', email, password }); //for registering
       const result = await axios.post(url, { name, email, password });
       console.log("response received in sign in page ", result);
+
+      //------- currently not signing in user after registering ... need to fix
       //if (result.data && result.data.success) {
       if (result.status === 200) {
         //TODO: context.setAuthenticated(true);
@@ -106,17 +107,7 @@ const Register = ({ history }) => {
                 autoFocus
               />
             </Grid>
-            {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
-                />
-              </Grid> */}
+            
             <Grid item xs={12}>
               <TextField
                 variant="outlined"

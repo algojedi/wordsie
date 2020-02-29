@@ -20,14 +20,7 @@ function App() {
     const getUsrUrl = "http://localhost:3001/profile/"; //TODO: change when deploying
 
     if (token) {
-      console.log(token)
-      // fetch(url, {
-      //   method: "post",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Authorization": token
-      //   }
-      // })
+      
       axios({
         url,
         method: "post",
