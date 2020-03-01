@@ -32,7 +32,7 @@ function App() {
         .then(resp => {
           if (resp.data) {
             //token exists in DB   
-            //fetch user from another endpoint
+            //fetch user from another api endpoint
             
             fetch(getUsrUrl + resp.data.userId, { //fetch is working fine
               method: "get",
