@@ -38,7 +38,7 @@ const WordCartItem = ({ wordInfo, removeWord }) => {
 
         </Grid>
         <Grid item xs={4}
-                onClick={removeWord(wordInfo._id)}
+                onClick={() => removeWord(wordInfo._id)}
                 >
             <DeleteOutlinedIcon />
         </Grid>
@@ -54,7 +54,12 @@ const WordCartItem = ({ wordInfo, removeWord }) => {
             <Typography variant="subtitle2" gutterBottom>
               {d.definition}
             </Typography>
-            <Typography className={classes.wordExample} variant="body2" gutterBottom>
+            <Typography
+              component={"div"}
+              className={classes.wordExample}
+              variant="body2"
+              gutterBottom
+            >
               {d.examples.map((ex, i) => {
                 return (
                   <Typography key={i} variant="body2" gutterBottom>

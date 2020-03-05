@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 //a component to display word information after user searches
 //for a word definition from the main search bar

@@ -55,7 +55,9 @@ function App() {
                 console.log("user from fetch", user);
                 if (user && user.email) {
                   context.setAuthenticated(true);
-                  context.setUser(user);
+                  const { name, email, _id, cart } = user;
+                  context.setUser( { name , email, _id } );
+                  context.renewCart({ cart });
                   //console.log('user set from useEffect: ', resp.data);
                 } else {
                   context.setAuthenticated(false);

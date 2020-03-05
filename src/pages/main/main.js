@@ -65,7 +65,7 @@ const Main = () => {
       console.log('missing token from session');
       return;
     }
-    //TODO: syntax for axios post request w word in body
+    
       console.log('word being sent to axios is ', word);
       const result = await axios({
                   url: addToCartUrl, 
@@ -78,19 +78,18 @@ const Main = () => {
                     word
                   }
                 });
-          
 
         console.log("response received from addtocart url", result);
         
         if (result.data && result.status === 200) {
-            //success
+            context.addWordToCart(result.data);
          }
       } catch (err) {
         console.log(err);
         //'response' in err ? console.log(err.response.data.message) : console.log(err);
       }
     }    
-    
+    console.log('context.cart from main ', context.cart)
     return (
       <div>
         <h1>Hello {context.user.name} </h1>
@@ -136,7 +135,7 @@ const Main = () => {
               : null}
         <h3>Your Cart</h3>
         
-        <WordCart words={context.user.cart}/>
+        <WordCart words={context.cart}/>
       </div>
     );
 }
