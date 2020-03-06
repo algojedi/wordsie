@@ -17,20 +17,21 @@ const addWordToCart = (wordInfo, state) => {
 };
 
 
-
+//state is word cart
 const removeWordFromCart = (wordId, state) => {
-  console.log("Removing word with id: " + wordId);
-
-  const updatedCart = state.filter(el => !el._id.equals(wordId) );
-  //TODO: DOES FILTER RETURN A DEEP COPY??  ERR: el._id.equals is not a fn
-    
+  // console.log("Removing word with id in reducer: " + wordId);
+  // console.log('wordId type is ', typeof wordId)
+  // console.log('state in remove reducer is ', state)
+  const updatedCart = state.filter(el => {
+    return el._id !== wordId
+  }  );
+  
   if (updatedCart.length === state.length) {
-    //nothing was removed
-    console.log('nothing was removed from client side cart')
+    //console.log('nothing was removed from client side cart')
     return state;
   }
-  
-  return updatedCart;
+  //console.log('updated cart from remove word reducer ', updatedCart);
+  return updatedCart; //TODO: always returning empty cart!!!
 
 };
 
@@ -42,6 +43,7 @@ export const cartReducer = (state, action) => {
     case REMOVE_WORD:
       return removeWordFromCart(action.payload, state);
     case RENEW_CART: 
+      console.log('new cart state from renew cart reducer should be ', action.payload.cart);
       return action.payload.cart; //initializes state to payload  
     default: 
       return state;

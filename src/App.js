@@ -42,17 +42,9 @@ function App() {
               }
             })
 
-            // axios({  //axios not working for some reason
-            //   url: getUsrUrl + resp.data.userId,
-            //   method: "get",
-            //   headers: {
-            //     "Content-Type": "application/json",
-            //     "Authorization": token
-            //   }
-            // })
               .then(data => data.json())
               .then(user => {
-                console.log("user from fetch", user);
+                //console.log("user from fetch", user);
                 if (user && user.email) {
                   context.setAuthenticated(true);
                   const { name, email, _id, cart } = user;
@@ -73,8 +65,6 @@ function App() {
     }
   },[])
   
-  console.log('context authenticated?: ', context.authenticated);
-
   return (
     <div className="App">
       <SearchAppBar/>

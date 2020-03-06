@@ -13,15 +13,15 @@ export const AuthContextProvider = ({ children }) => {
 
   const addWordToCart = wordInfo => {
     //wordInfo should be an object holding word information
-    setTimeout(() => {
-      dispatch({ type: ADD_WORD, payload: wordInfo });
-    }, 200);
+    dispatch({ type: ADD_WORD, payload: wordInfo });
+    // setTimeout(() => {
+    // }, 200);
   };
 
   const removeWordFromCart = wordId => {
-    setTimeout(() => {
-      dispatch({ type: REMOVE_WORD, payload: wordId });
-    }, 200);
+    dispatch({ type: REMOVE_WORD, payload: wordId });
+    // setTimeout(() => {
+    // }, 200);
   };
 
   const renewCart = newCart => {

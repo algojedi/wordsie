@@ -50,7 +50,7 @@ const Main = () => {
             setShowDefinition(true);
          }
       } catch (err) {
-        console.log(err);
+        //TODO: label for material ui input error label
         //'response' in err ? console.log(err.response.data.message) : console.log(err);
       }
     }
@@ -92,8 +92,8 @@ const Main = () => {
     console.log('context.cart from main ', context.cart)
     return (
       <div>
-        <h1>Hello {context.user.name} </h1>
-        <hr></hr>
+        {/* <h1>Hello {context.user.name} </h1>
+        <hr></hr> */}
         <Container component="main" maxWidth="xs">
           <div className={classes.paper}>
             <form className={classes.form} onSubmit={handleSubmit} noValidate>
