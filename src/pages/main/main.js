@@ -5,7 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import WordDefinition from "../../components/word-def/word-def"
-import WordCart from '../../components/word-cart/word-cart'
+// import WordCart from "../../components/word-cart/word-cart";
+import TmpWordCart from "../../components/tmp-word-cart/TmpWordCart";
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -122,20 +123,20 @@ const Main = () => {
           </div>
         </Container>
         {showDefinition ? <WordDefinition wordInformation={wordInfo} /> : null}
-        {showDefinition ? 
-         (<Button
-                onClick = {handleAddToCart}
-                variant="contained"
-                color="secondary"
-                className={classes.submit}
-              >
-                Add to Cart
-              </Button>)
-              
-              : null}
+        {showDefinition ? (
+          <Button
+            onClick={handleAddToCart}
+            variant="contained"
+            color="secondary"
+            className={classes.submit}
+          >
+            Add to Cart
+          </Button>
+        ) : null}
         <h3>Your Cart</h3>
-        
-        <WordCart words={context.cart}/>
+        <TmpWordCart words={context.cart} />
+
+        {/* <WordCart words={context.cart} /> */}
       </div>
     );
 }
