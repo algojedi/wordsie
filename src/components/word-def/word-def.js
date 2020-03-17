@@ -1,35 +1,72 @@
-import React from 'react'
+import React from "react";
 
-//a component to display word information after user searches
-//for a word definition from the main search bar
-const WordDefinition = ({wordInformation}) => {
-    //console.log('props from wordDefin component') ; 
-    //console.log(wordInformation);
-    if (!wordInformation) {
-        return; //needless insurance
-    }
-    const {definitions} = wordInformation;
+//import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
-    const defsToDisplay = definitions.map((item, i) => {
-      return (
-        <li key={i}>
-            <section>
-                {item.definition}
-            </section>
-            <ul>
-                {item.examples.map((ex, i) => <li key={i}> {ex} </li>)}
-            </ul>
-        </li>)
-    });
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275
+  },
+  title: {
+    fontSize: 14
+  },
+  wordExample: {
+    fontWeight: 'normal',
+    fontStyle: "italic"
+  
+  },
+  definition: {
+    fontWeight: 'bold'
+  },
+  pos: {
+    marginBottom: 12
+  }
+});
 
+const WordDefinition = ({ wordInformation }) => {
+  const classes = useStyles();
+  const { definitions } = wordInformation;
+
+  const defsToDisplay = definitions.map((item, i) => {
     return (
-      <div>
-        <div>showing word def comp</div>
-        <section>{wordInformation.word}</section>
-        <article>{wordInformation.part}</article>
-        {<ul>{defsToDisplay}</ul>}
-      </div>
+      <Typography className={classes.definition} key={i} variant="body2" component="div">
+        {item.definition}
+
+        <br />
+        {item.examples.map((ex, i) => (
+          <li className={classes.wordExample} key={i}>
+            {ex}
+          </li>
+        ))}
+      </Typography>
     );
-}
- 
+  });
+
+  return (
+    <Card className={classes.root}>
+      <CardContent>
+        <Typography variant="h5" component="h2">
+          {wordInformation.word}
+        </Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          {wordInformation.part}
+        </Typography>
+        {defsToDisplay}
+      </CardContent>
+      <CardActions>
+        
+        <Button size="small" color="primary">
+          Learn More
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
 export default WordDefinition;
+
