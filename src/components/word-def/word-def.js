@@ -5,7 +5,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
@@ -21,20 +20,26 @@ const useStyles = makeStyles({
   
   },
   definition: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginTop: 10
   },
   pos: {
     marginBottom: 12
   }
 });
 
-const WordDefinition = ({ wordInformation }) => {
+const WordDefinition = ({ wordInformation, addToCartBtn }) => {
   const classes = useStyles();
   const { definitions } = wordInformation;
 
   const defsToDisplay = definitions.map((item, i) => {
     return (
-      <Typography className={classes.definition} key={i} variant="body2" component="div">
+      <Typography
+        className={classes.definition}
+        key={i}
+        variant="body2"
+        component="div"
+      >
         {item.definition}
 
         <br />
@@ -59,10 +64,8 @@ const WordDefinition = ({ wordInformation }) => {
         {defsToDisplay}
       </CardContent>
       <CardActions>
+        {addToCartBtn()}
         
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
       </CardActions>
     </Card>
   );

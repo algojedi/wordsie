@@ -6,7 +6,7 @@ export const AuthContextProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [cart, dispatch] = useReducer(cartReducer, [] );
-
+//TODO: useReducer above should have initial state read in from db
   // CONFUSION BECAUSE MIXING USESTATE AND USEREDUCER....? or is that ok
 
   

@@ -1,83 +1,143 @@
 import React, { useContext } from "react";
-import WordCartItem from "../word-cart-item/word-cart-item";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import AuthContext from "../../contexts/authContext";
-
+import { makeStyles } from "@material-ui/core/styles";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Divider from "@material-ui/core/Divider";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  },
-  grid: {
-    border: "2px solid red",
-    width: "80%",
-    margin: "auto"
-  },
-  gridItem: {
     width: "100%",
-    outline: "red",
-    textAlign: "left"
+    marginBottom: 50
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: "33.33%",
+    flexShrink: 0
+  },
+  secondaryHeading: {
+    //styles the 'part' of the word
+    fontSize: theme.typography.pxToRem(15),
+    //color: theme.palette.text.secondary,
+    color: "#C2A878"
+  },
+  definition: {
+    //margin: 5,
+    padding: theme.spacing(1, 0)
+  },
+  example: {
+    padding: theme.spacing(0, 2),
+    fontStyle: "italic"
+  },
+  number: {
+    color: "#C2A878",
+    marginRight: 8, // theme.spacing(0, 1),
+    fontWeight: "bold"
+  },
+  details: {
+    flexDirection: "column",
+    backgroundColor: "#F1F5F2"
+  },
+  wordItem: {
+    display: "flex",
+    flexDirection: "column"
+    //color: 'red'
+  },
+  removeBtn: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  trash: {
+    padding: theme.spacing(2, 2),
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: "#F1F5F2"
   }
 }));
 
-const WordCart = ({ words }) => {
-      const context = useContext(AuthContext);
-
+//words parameter are all the words in the list
+export default function WordCart({ words }) {
+  const context = useContext(AuthContext);
   const classes = useStyles();
-  //console.log('words received in wordCart: ', words);
-  const removeWord = async wordId => {
-    console.log('clicked trash icon w wordid', wordId)
-    const token = window.sessionStorage.getItem("token");
+  const [expanded, setExpanded] = React.useState(false);
 
-    const removeFromCartUrl = "http://localhost:3001/removeWord";
-
-    const result = await axios({
-      url: removeFromCartUrl,
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token
-      },
-      data: {
-        //represents the body
-        wordId
-      }
-    })
-    //TODO: need to remove from client side as well
-    //console.log('result from trying to remove word ', result);
-    if (result.status === 200) {
-      context.removeWordFromCart(wordId);
-    }
+  const handleChange = panel => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
-  //console.log('received in the word cart ', words)
-  if (!words) {
-    console.log("returning early due to null condn");
-    return null;
-  }
   return (
-    <Grid
-      className={classes.grid}
-      container
-      direction="column"
-      justify="space-around"
-      alignItems="center"
-    >
+    <div className={classes.root}>
       {words.map((w, i) => {
         return (
-          <Grid key={i} item xs={12} className={classes.gridItem}>
-            <WordCartItem removeWord={removeWord} wordInfo={w} />
-          </Grid>
+          <ExpansionPanel
+            key={i}
+            expanded={expanded === w.word}
+            onChange={handleChange(w.word)}
+          >
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography className={classes.heading}>{w.word}</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {w.part.toLowerCase()}
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.details}>
+              {w.definitions.map((d, j) => {
+                return (
+                  <div key={j} className={classes.definition}>
+                    <div className={classes.wordItem}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        <span className={classes.number}>{j + 1}</span>
+                        {d.definition}
+                      </Typography>
+                      <Typography
+                        component={"div"}
+                        variant="body2"
+                        gutterBottom
+                      >
+                        {d.examples.map((ex, k) => {
+                          return (
+                            <Typography
+                              key={k}
+                              variant="body2"
+                              gutterBottom
+                              className={classes.example}
+                            >
+                              &bull; {ex}
+                            </Typography>
+                          );
+                        })}
+                      </Typography>
+                      {w.definitions.length > 1 ? <Divider /> : null}
+                    </div>
+                  </div>
+                );
+              })}
+            </ExpansionPanelDetails>
+            <div className={classes.trash}>
+              <Button
+                onClick={() => context.removeWordFromCart(w._id)}
+                variant="contained"
+                color="secondary"
+                className={classes.removeBtn}
+              >
+                <div>Remove</div>
+                <DeleteOutlinedIcon />
+              </Button>
+            </div>
+          </ExpansionPanel>
         );
       })}
-    </Grid>
+    </div>
   );
-};
+}
 
-export default WordCart;
+//F1F5F2 off-white
+// 14281D dark green
+// hunter green 355834
+// 6E633D coyote brown - semi dark
+// C2A878 - french beige
