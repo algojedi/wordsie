@@ -19,9 +19,7 @@ const addWordToCart = (wordInfo, state) => {
 
 //state is word cart
 const removeWordFromCart = (wordId, state) => {
-  // console.log("Removing word with id in reducer: " + wordId);
-  // console.log('wordId type is ', typeof wordId)
-  // console.log('state in remove reducer is ', state)
+  
   const updatedCart = state.filter(el => {
     return el._id !== wordId
   }  );

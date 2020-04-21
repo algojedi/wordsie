@@ -7,8 +7,6 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [cart, dispatch] = useReducer(cartReducer, [] );
 //TODO: useReducer above should have initial state read in from db
-  // CONFUSION BECAUSE MIXING USESTATE AND USEREDUCER....? or is that ok
-
   
 
   const addWordToCart = wordInfo => {
@@ -25,9 +23,9 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   const renewCart = newCart => {
-    setTimeout(() => {
       dispatch({ type: RENEW_CART, payload: newCart });
-    }, 200);
+    //setTimeout(() => {
+    //}, 200);
   }
 
   return (

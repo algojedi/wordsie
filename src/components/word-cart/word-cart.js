@@ -46,7 +46,6 @@ const useStyles = makeStyles(theme => ({
   wordItem: {
     display: "flex",
     flexDirection: "column"
-    //color: 'red'
   },
   removeBtn: {
     display: "flex",

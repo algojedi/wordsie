@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import SearchAppBar from './components/searchbar/searchbar'
+import ButtonAppBar from './components/searchbar/searchbar'
 import SignIn from './components/sign-in/signin';
 import Register from './components/sign-in/register';
 import Main from './pages/main/main'
@@ -34,7 +34,7 @@ function App() {
             //token exists in DB   
             //fetch user from another api endpoint
             
-            fetch(getUsrUrl + resp.data.userId, { //fetch is working fine
+            fetch(getUsrUrl + resp.data.userId, { 
               method: "get",
               headers: {
                 "Content-Type": "application/json",
@@ -44,13 +44,11 @@ function App() {
 
               .then(data => data.json())
               .then(user => {
-                //console.log("user from fetch", user);
                 if (user && user.email) {
                   context.setAuthenticated(true);
                   const { name, email, _id, cart } = user;
                   context.setUser( { name , email, _id } );
                   context.renewCart({ cart });
-                  //console.log('user set from useEffect: ', resp.data);
                 } else {
                   context.setAuthenticated(false);
                   console.log("auth denied from useEffect");
@@ -67,7 +65,7 @@ function App() {
   
   return (
     <div className="App">
-      <SearchAppBar/>
+      <ButtonAppBar/>
       <Switch>
         <Route exact path='/' >
           {context.authenticated ? < Main /> : < SignIn /> }

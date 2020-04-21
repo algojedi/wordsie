@@ -7,26 +7,62 @@ import Container from "@material-ui/core/Container";
 import WordDefinition from "../../components/word-def/word-def";
 import WordCart from "../../components/word-cart/word-cart";
 import axios from "axios";
+import SendIcon from "@material-ui/icons/Send";
 
-const useStyles = makeStyles(theme => ({
-  paper: {
-    marginTop: theme.spacing(8),
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+
+import SearchIcon from "@material-ui/icons/Search";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: "2px 4px",
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "center"
+    alignItems: "center",
+    minWidth: 275,
+    maxWidth: 500,
+    margin: 30,
   },
-mainBody: {
-  margin: 'auto',
-  width: "80%"
-},
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3)
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+  iconButton: {
+    padding: 10,
+  },
+
+  //   paper: {
+  //     marginTop: theme.spacing(4),
+  //     display: "flex",
+  //     flexDirection: "row",
+  //     justifyContent: "center"
+  //   },
+  // mainBody: {
+  //   margin: 'auto',
+  //   width: "80%"
+  // },
+  //   form: {
+  //     width: "100%", // Fix IE 11 issue.
+  //     flexDirection: "row",
+  //     display: "flex",
+  //     alignItems: "center",
+  //     position: "relative",
+  //   },
+  //   submit: {
+  //     //margin: theme.spacing(3, 0, 2),
+  //     marginLeft: '15px',
+  //     position: "relative",
+  //     right: 16,
+  //     top: 3.5
+
+  //   },
+  //   searchField: {
+  //     paddingRight: 10
+  //     // height: 1
+  //   }
 }));
+const height = 45; // height of search field
 
 const Main = () => {
   const classes = useStyles();
@@ -41,8 +77,11 @@ const Main = () => {
   //showDefinition controls whether word definition (wordInfo) is displayed
   const [showDefinition, setShowDefinition] = useState(false);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (word === "") {
+      return;
+    } //TODO: display error message due to no input in search field
     try {
       const result = await axios.get(wordSearchUrl + word);
       //console.log("response received in main page word query ", result.data);
@@ -65,19 +104,17 @@ const Main = () => {
         console.log("missing token from session");
         return;
       }
-
-      //console.log("word being sent to axios is ", word);
       const result = await axios({
         url: addToCartUrl,
         method: "post",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token
+          Authorization: token,
         },
         data: {
           //represents the body
-          word
-        }
+          word,
+        },
       });
 
       // console.log("response received from addtocart url", result);
@@ -93,10 +130,8 @@ const Main = () => {
   console.log("context.cart from main ", context.cart);
   return (
     <div className={classes.mainBody}>
-      {/* <h1>Hello {context.user.name} </h1>
-        <hr></hr> */}
-      <Container component="main" maxWidth="xs">
-        <div className={classes.paper}>
+      <Container component="main" >
+        {/* <div className={classes.paper}>
           <form className={classes.form} onSubmit={handleSubmit} noValidate>
             <TextField
               variant="outlined"
@@ -105,22 +140,49 @@ const Main = () => {
               fullWidth
               label="Search Word"
               name="word"
+              className={classes.searchField}
               autoFocus
+              inputProps={{
+      style: {
+        height,
+        padding: 0
+      },
+  }}
               value={word}
               onChange={e => setWord(e.target.value)}
             />
-
             <Button
               type="submit"
-              fullWidth
-              variant="contained"
+              margin="normal"
+              variant="outlined"
               color="primary"
               className={classes.submit}
+              style={{maxWidth: '45px', maxHeight: '45px', minWidth: '45px', minHeight: '45px'}}
+             
             >
-              Submit
+              
+              <SendIcon/>
             </Button>
           </form>
-        </div>
+        </div> */}
+
+        <Paper component="form" className={classes.root}>
+          <InputBase
+            className={classes.input}
+            placeholder="Word Search"
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+          />
+          <IconButton
+            type="submit"
+            onClick={handleSubmit}
+            noValidate
+            className={classes.iconButton}
+            aria-label="search"
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
       </Container>
 
       {showDefinition ? (
@@ -143,9 +205,14 @@ const Main = () => {
 
       <h3>Your Word List </h3>
       <WordCart words={context.cart} />
-
     </div>
   );
 };
 
 export default Main;
+{
+  /*
+ 
+
+*/
+}
