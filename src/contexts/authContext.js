@@ -24,8 +24,6 @@ export const AuthContextProvider = ({ children }) => {
 
   const renewCart = newCart => {
       dispatch({ type: RENEW_CART, payload: newCart });
-    //setTimeout(() => {
-    //}, 200);
   }
 
   return (

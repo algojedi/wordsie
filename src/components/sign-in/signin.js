@@ -73,9 +73,11 @@ const SignIn = ({ history }) => {
       })
         .then(data => data.json())
         .then(user => {
-          console.log("user from fetch in sign query to profile endpt", user);
+          //console.log("user from fetch in sign query to profile endpt", user);
           if (user && user.email) {
-            context.setUser(user);
+            const { name, email, _id, cart } = user;
+            context.setUser({ name, email, _id });
+            context.renewCart({ cart });
             context.setAuthenticated(true); //this will route to /main because of route condition in app.js
           } else {
             context.setAuthenticated(false);

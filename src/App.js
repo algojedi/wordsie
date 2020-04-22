@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import ButtonAppBar from './components/searchbar/searchbar'
+import ButtonAppBar from './components/appbar/button-appbar'
 import SignIn from './components/sign-in/signin';
 import Register from './components/sign-in/register';
+import Welcome from './pages/welcome/welcome'
 import Main from './pages/main/main'
 import { Switch, Route, Redirect } from 'react-router-dom';
 import AuthContext from "./contexts/authContext";
@@ -49,6 +50,7 @@ function App() {
                   const { name, email, _id, cart } = user;
                   context.setUser( { name , email, _id } );
                   context.renewCart({ cart });
+                  console.log('cart from useEffect ', cart);
                 } else {
                   context.setAuthenticated(false);
                   console.log("auth denied from useEffect");
@@ -67,9 +69,9 @@ function App() {
     <div className="App">
       <ButtonAppBar/>
       <Switch>
-        <Route exact path='/' >
-          {context.authenticated ? < Main /> : < SignIn /> }
-        </Route> 
+        <Route exact path='/' component={Welcome}/>
+          {/* {context.authenticated ? < Main /> : < SignIn /> } */}
+        <Route path='/signin' component={SignIn} />
         <Route path='/register' component={Register}/>
 
       </Switch>

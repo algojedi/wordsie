@@ -1,28 +1,40 @@
 import React, { useState, useContext } from "react";
+import Typography from "@material-ui/core/Typography";
 import AuthContext from "../../contexts/authContext";
-import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import WordDefinition from "../../components/word-def/word-def";
 import WordCart from "../../components/word-cart/word-cart";
 import axios from "axios";
-import SendIcon from "@material-ui/icons/Send";
-
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 
 import SearchIcon from "@material-ui/icons/Search";
+import WordSearchBar from "../../components/word-searchbar/word-searchbar"
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "2px 4px",
+  container: {
+    // padding: "1px 3px",
     display: "flex",
     alignItems: "center",
     minWidth: 275,
     maxWidth: 500,
-    margin: 30,
+    margin: 15,
+  },
+  listTitle: {
+    padding: 24, // the padding applied to expansion panels by default
+    paddingBottom: 12
+  },
+  root: {
+      display: "flex",
+      background: "#28536B",
+      flexGrow: 1,
+      maxWidth: "100%",
+      padding: 0,
+      margin: 0,
+      justifyContent: "center"
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -32,37 +44,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
   },
 
-  //   paper: {
-  //     marginTop: theme.spacing(4),
-  //     display: "flex",
-  //     flexDirection: "row",
-  //     justifyContent: "center"
-  //   },
-  // mainBody: {
-  //   margin: 'auto',
-  //   width: "80%"
-  // },
-  //   form: {
-  //     width: "100%", // Fix IE 11 issue.
-  //     flexDirection: "row",
-  //     display: "flex",
-  //     alignItems: "center",
-  //     position: "relative",
-  //   },
-  //   submit: {
-  //     //margin: theme.spacing(3, 0, 2),
-  //     marginLeft: '15px',
-  //     position: "relative",
-  //     right: 16,
-  //     top: 3.5
-
-  //   },
-  //   searchField: {
-  //     paddingRight: 10
-  //     // height: 1
-  //   }
 }));
-const height = 45; // height of search field
 
 const Main = () => {
   const classes = useStyles();
@@ -88,6 +70,7 @@ const Main = () => {
       if (result.data && result.status === 200) {
         setWordInfo(result.data);
         setShowDefinition(true);
+        setWord("");
       }
     } catch (err) {
       //TODO: label for material ui input error label
@@ -100,7 +83,7 @@ const Main = () => {
     try {
       const token = window.sessionStorage.getItem("token");
 
-      if (!token) {
+      if (!token) { //return early if no token
         console.log("missing token from session");
         return;
       }
@@ -112,13 +95,9 @@ const Main = () => {
           Authorization: token,
         },
         data: {
-          //represents the body
           word,
         },
       });
-
-      // console.log("response received from addtocart url", result);
-
       if (result.data && result.status === 200) {
         context.addWordToCart(result.data);
       }
@@ -127,46 +106,10 @@ const Main = () => {
       //'response' in err ? console.log(err.response.data.message) : console.log(err);
     }
   };
-  console.log("context.cart from main ", context.cart);
   return (
-    <div className={classes.mainBody}>
-      <Container component="main" >
-        {/* <div className={classes.paper}>
-          <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="Search Word"
-              name="word"
-              className={classes.searchField}
-              autoFocus
-              inputProps={{
-      style: {
-        height,
-        padding: 0
-      },
-  }}
-              value={word}
-              onChange={e => setWord(e.target.value)}
-            />
-            <Button
-              type="submit"
-              margin="normal"
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              style={{maxWidth: '45px', maxHeight: '45px', minWidth: '45px', minHeight: '45px'}}
-             
-            >
-              
-              <SendIcon/>
-            </Button>
-          </form>
-        </div> */}
-
-        <Paper component="form" className={classes.root}>
+    <React.Fragment> 
+      <Container className={classes.root} component="main" >
+        <Paper component="form" className={classes.container}>
           <InputBase
             className={classes.input}
             placeholder="Word Search"
@@ -203,16 +146,12 @@ const Main = () => {
         />
       ) : null}
 
-      <h3>Your Word List </h3>
+      <Typography className={classes.listTitle} variant="h5" gutterBottom>
+      Your Word List 
+      </Typography>
       <WordCart words={context.cart} />
-    </div>
+    </React.Fragment>
   );
 };
 
 export default Main;
-{
-  /*
- 
-
-*/
-}
