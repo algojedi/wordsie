@@ -70,8 +70,8 @@ function App() {
       <ButtonAppBar/>
       <Switch>
         <Route exact path='/' component={Welcome}/>
-          {/* {context.authenticated ? < Main /> : < SignIn /> } */}
         <Route path='/signin' component={SignIn} />
+        <Route path='/main' component={Main} />
         <Route path='/register' component={Register}/>
 
       </Switch>

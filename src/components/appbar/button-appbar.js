@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthContext from "../../contexts/authContext";
 import AppBar from "@material-ui/core/AppBar";
@@ -6,7 +6,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import "./button-appbar.css";
-
+import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
   const classes = useStyles();
   const context = useContext(AuthContext);
+let history = useHistory();
 
   return (
     <div>
       <AppBar elevation={0} className={classes.root} position="static">
         <Toolbar>
-          {/* may not need hamburger menu pullout...
+          {/* ay not need hamburger menu pullout...
             <IconButton
             edge="start"
             className={classes.menuButton}
@@ -57,9 +58,7 @@ export default function ButtonAppBar() {
           ) : (
             <Button
               color="inherit"
-              onClick={() => {
-                console.log("login clicked");
-              }}
+              onClick={() => history.push("/signin")}
             >
               Login
             </Button>
