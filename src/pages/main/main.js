@@ -10,11 +10,12 @@ import axios from "axios";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
-
+import { withStyles} from '@material-ui/core/styles'
 import SearchIcon from "@material-ui/icons/Search";
 import WordSearchBar from "../../components/word-searchbar/word-searchbar"
 
-const useStyles = makeStyles((theme) => ({
+//const useStyles = makeStyles((theme) => ({
+  const styles = theme => ({
   container: {
     // padding: "1px 3px",
     display: "flex",
@@ -45,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
   },
 
-}));
+});
 
-const Main = () => {
-  const classes = useStyles();
+const Main = ({classes}) => {
+  //const classes = useStyles();
   const wordSearchUrl = "http://localhost:3001/define?word=";
   const addToCartUrl = "http://localhost:3001/addWordToCart";
 
@@ -155,4 +156,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default withStyles(styles)(Main);

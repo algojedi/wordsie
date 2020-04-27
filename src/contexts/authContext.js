@@ -1,5 +1,5 @@
 import React, { useState, useReducer, createContext } from "react";
-import { ADD_WORD, REMOVE_WORD, RENEW_CART, cartReducer } from "./reducers";
+import { ADD_WORD, REMOVE_WORD, RENEW_CART, cartReducer, EMPTY_CART } from "./reducers";
 const AuthContext = createContext(); //creates Provider
 
 export const AuthContextProvider = ({ children }) => {
@@ -26,6 +26,11 @@ export const AuthContextProvider = ({ children }) => {
       dispatch({ type: RENEW_CART, payload: newCart });
   }
 
+  const signOut = () => {
+    setUser(null)
+    dispatch({ type: EMPTY_CART})
+    setAuthenticated(false)
+  }
   return (
     <AuthContext.Provider
       value={{
@@ -33,10 +38,11 @@ export const AuthContextProvider = ({ children }) => {
         setAuthenticated,
         user,
         setUser,
-        cart,
+        cart, 
         addWordToCart,
         removeWordFromCart,
-        renewCart
+        renewCart,
+        signOut
       }}
     >
       {children}

@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Copyright from "../copyright/copyright";
+import Copyright from "../../components/copyright/copyright";
 import AuthContext from "../../contexts/authContext";
 import axios from "axios";
 
@@ -147,7 +147,7 @@ const Register = ({ history }) => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link variant="body2" component={RouterLink} to="/">
+              <Link variant="body2" component={RouterLink} to="/signin">
                 Already have an account? Sign in
               </Link>
             </Grid>

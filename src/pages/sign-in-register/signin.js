@@ -15,8 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
 import AuthContext from '../../contexts/authContext';
-
-import Copyright from '../copyright/copyright'
+import Copyright from "../../components/copyright/copyright";
 
 const useStyles = makeStyles(theme => ({
     paper: {

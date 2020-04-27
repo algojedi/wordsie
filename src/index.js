@@ -5,13 +5,42 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/authContext'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
+import { blue, brown } from '@material-ui/core/colors'
+
+const theme = createMuiTheme({
+    palette: {
+        //secondary: {
+            info: {
+            
+            //main: "#28536B" //slate blue
+            //main: '#c4a695'
+            contrastText: "white",
+            main: "#c2a878", //light brown
+            dark: '#b08e4f'
+        },
+        primary: {
+            main: blue[900],
+        },
+        
+    },
+    // typography: {
+    //    button: {
+    //   color: 'white',
+      
+    // },
+ // },
+    
+})
 
 ReactDOM.render(
 
     <BrowserRouter>
+    <MuiThemeProvider theme={theme}>
         <AuthContextProvider>
             <App />
         </AuthContextProvider>
+    </MuiThemeProvider>
     </BrowserRouter>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

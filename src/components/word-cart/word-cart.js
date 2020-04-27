@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     //styles the 'part' of the word
     fontSize: theme.typography.pxToRem(15),
     //color: theme.palette.text.secondary,
-    color: "#C2A878"
+    color: "#C2A878" // color of part
   },
   definition: {
     //margin: 5,
@@ -49,6 +49,8 @@ const useStyles = makeStyles(theme => ({
   },
   removeBtn: {
     display: "flex",
+  //  backgroundColor: "red",
+  //  color: "white",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -65,6 +67,8 @@ export default function WordCart({ words }) {
   const context = useContext(AuthContext);
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  if (!context.authenticated) return null;
+
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -120,7 +124,7 @@ export default function WordCart({ words }) {
             <div className={classes.trash}>
               <Button
                 onClick={() => context.removeWordFromCart(w._id)}
-                variant="contained"
+                variant="outlined"
                 color="secondary"
                 className={classes.removeBtn}
               >
