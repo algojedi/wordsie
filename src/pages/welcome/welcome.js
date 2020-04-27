@@ -44,18 +44,18 @@ const useStyles = makeStyles({
     //align: "center"
   },
   btn: {
-    backgroundColor: "#28536B",
+    backgroundColor: "#28536B", //slate blue
     color: "white",
     "&:hover": {
-      backgroundColor: "#7EA8BE",
+      backgroundColor: "#7EA8BE", //lighter blue
     },
   },
 
   btnSignin: {
-    backgroundColor: "#6b4028",
+    backgroundColor: "#6b4028", //dark red brown
     color: "white",
     "&:hover": {
-      backgroundColor: "#a3613d",
+      backgroundColor: "#a3613d", //lighter red brown
     },
   },
 });
