@@ -17,6 +17,10 @@
   margin-right: 3px;
   line-height: 1.5;
 }
+.register-link {
+  cursor: pointer;
+  font-style: italic;
+}
 .quote {
     margin: 50px 25px;
     color: grey;

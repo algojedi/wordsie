@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,8 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import "./welcome.css";
 import { Container } from "@material-ui/core";
 import light from "../../assets/lightbulb.svg";
+import AuthContext from "../../contexts/authContext";
+//import { withStyles} from '@material-ui/core/styles'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+
+  //const styles = theme => ({
   root: {
     //modifies the card component
     minWidth: 275,
@@ -29,10 +33,7 @@ const useStyles = makeStyles({
     transform: "scale(0.8)",
   },
   title: {
-    //color: "#C2948A",
     lineHeight: 1.5,
-    //letterSpacing: 2,
-    //fontSize: 14,
   },
   register: {
     padding: 16,
@@ -41,27 +42,27 @@ const useStyles = makeStyles({
   quote: {
     margin: "12 auto",
     width: 500,
-    //align: "center"
   },
   btn: {
-    backgroundColor: "#28536B",
+    backgroundColor: theme.palette.info.main,
+
     color: "white",
     "&:hover": {
-      backgroundColor: "#7EA8BE",
+      backgroundColor: theme.palette.info.dark,
     },
   },
-
   btnSignin: {
-    backgroundColor: "#6b4028",
+    backgroundColor: "#876d3d",
     color: "white",
     "&:hover": {
-      backgroundColor: "#a3613d",
+      backgroundColor: "#6c5731",
     },
   },
-});
+}));
 
-const Welcome = ({ history }) => {
-  const classes = useStyles();
+const Welcome = ({ history, theme }) => {
+  const classes = useStyles(theme);
+  const context = useContext(AuthContext);
   const bull = <span className={classes.bullet}>•</span>;
   return (
     <div>
@@ -86,24 +87,32 @@ const Welcome = ({ history }) => {
               className={classes.btn}
               onClick={() => history.push("/main")}
               size="medium"
+              //color="secondary"
             >
               Enter site
-            </Button>    
-              <Button
-
-              variant="contained"
-              className={classes.btnSignin}
-              onClick={() => history.push("/signin")}
-              size="medium"
-            >
-           Sign in
             </Button>
-       
+            {context.authenticated ? null : (
+              <Button
+                variant="contained"
+                className={classes.btnSignin}
+                onClick={() => history.push("/signin")}
+                size="medium"
+              >
+                Sign in
+              </Button>
+            )}
           </CardActions>
-          <Typography className={classes.register}>
-            Don't have an account?{" "}
-            <span onClick={() => history.push("/register")}>Register here</span>
-          </Typography>
+          {context.authenticated ? null : (
+            <Typography className={classes.register}>
+              Don't have an account?{" "}
+              <span
+                className="register-link"
+                onClick={() => history.push("/register")}
+              >
+                Register here
+              </span>
+            </Typography>
+          )}
         </Card>
       </Container>
       <div className="quote">

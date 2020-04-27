@@ -2,6 +2,7 @@ import cloneDeep from "lodash/cloneDeep";
 export const ADD_WORD = 'ADD_WORD';
 export const REMOVE_WORD = "REMOVE_WORD";
 export const RENEW_CART = "RENEW_CART";
+export const EMPTY_CART = "EMPTY_CART";
 
 const addWordToCart = (wordInfo, state) => {
   console.log('wordinfo in addd to cart ', wordInfo);
@@ -41,8 +42,10 @@ export const cartReducer = (state, action) => {
     case REMOVE_WORD:
       return removeWordFromCart(action.payload, state);
     case RENEW_CART: 
-      console.log('new cart state from renew cart reducer should be ', action.payload.cart);
+    //  console.log('new cart state from renew cart reducer should be ', action.payload.cart);
       return action.payload.cart; //initializes state to payload  
+    case EMPTY_CART:
+      return {}
     default: 
       return state;
   }

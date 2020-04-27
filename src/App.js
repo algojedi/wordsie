@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import ButtonAppBar from './components/appbar/button-appbar'
-import SignIn from './components/sign-in/signin';
-import Register from './components/sign-in/register';
+import SignIn from './pages/sign-in-register/signin';
+import Register from './pages/sign-in-register/register';
 import Welcome from './pages/welcome/welcome'
 import Main from './pages/main/main'
 import { Switch, Route, Redirect } from 'react-router-dom';
@@ -70,7 +70,9 @@ function App() {
       <ButtonAppBar/>
       <Switch>
         <Route exact path='/' component={Welcome}/>
-        <Route path='/signin' component={SignIn} />
+        <Route path='/signin'>
+        {context.authenticated ? <Main/> : <SignIn/> }
+        </Route>
         <Route path='/main' component={Main} />
         <Route path='/register' component={Register}/>
 

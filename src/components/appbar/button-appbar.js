@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import "./button-appbar.css";
 import { useHistory } from "react-router-dom";
+import { EMPTY_CART } from "../../contexts/reducers";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -17,8 +19,11 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    width: 170,
+
+    marginRight: "auto",
     padding: 5,
+    cursor: "pointer"
   },
   appName_lower: {
     margin: 0,
@@ -44,14 +49,18 @@ let history = useHistory();
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h6" className={classes.title}>
-            <div className="appName">Wordsie</div>
+          <Typography onClick={() => history.push('/')} variant="h6" className={classes.title}>
+            <div  className="appName">Wordsie</div>
             <Typography className="appName_lower">The Words App</Typography>
           </Typography>
           {context.authenticated ? (
             <Button
               color="inherit"
-              onClick={() => context.setAuthenticated(false)}
+              onClick={() => { 
+                context.signOut();
+                history.push('/');
+                }
+              }
             >
               Logout
             </Button>
