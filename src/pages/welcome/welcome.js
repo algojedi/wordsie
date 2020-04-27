@@ -34,7 +34,9 @@ const useStyles = makeStyles({
     //letterSpacing: 2,
     //fontSize: 14,
   },
-
+  register: {
+    padding: 16,
+  },
   img: {},
   quote: {
     margin: "12 auto",
@@ -46,6 +48,14 @@ const useStyles = makeStyles({
     color: "white",
     "&:hover": {
       backgroundColor: "#7EA8BE",
+    },
+  },
+
+  btnSignin: {
+    backgroundColor: "#6b4028",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#a3613d",
     },
   },
 });
@@ -62,12 +72,12 @@ const Welcome = ({ history }) => {
         <Card className={classes.root} variant="outlined">
           <CardContent>
             <Typography variant="h4" className={classes.title}>
-              Word{bull}sie <span className="noun">noun</span>
+              word{bull}sie <span className="noun">noun</span>
             </Typography>
             <div className="def">DEFINITION:</div>
             <Typography variant="body1" component="p">
-              a site to help you increase your vocabulary through active recall
-              to commit new words to memory
+              a site to help increase your vocabulary through active recall to
+              commit new words to memory
             </Typography>
           </CardContent>
           <CardActions>
@@ -78,8 +88,22 @@ const Welcome = ({ history }) => {
               size="medium"
             >
               Enter site
+            </Button>    
+              <Button
+
+              variant="contained"
+              className={classes.btnSignin}
+              onClick={() => history.push("/signin")}
+              size="medium"
+            >
+           Sign in
             </Button>
+       
           </CardActions>
+          <Typography className={classes.register}>
+            Don't have an account?{" "}
+            <span onClick={() => history.push("/register")}>Register here</span>
+          </Typography>
         </Card>
       </Container>
       <div className="quote">

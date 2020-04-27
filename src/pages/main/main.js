@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   listTitle: {
     padding: 24, // the padding applied to expansion panels by default
-    paddingBottom: 12
+    paddingBottom: 12,
+    color: '#a3613d'
   },
   root: {
       display: "flex",

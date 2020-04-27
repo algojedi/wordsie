@@ -60,7 +60,7 @@ let history = useHistory();
               color="inherit"
               onClick={() => history.push("/signin")}
             >
-              Login
+              Sign in
             </Button>
           )}
         </Toolbar>
