@@ -19,7 +19,6 @@ function App() {
     const token = window.sessionStorage.getItem("token");
     const url = "http://localhost:3001/login"; //TODO: change when deploying
     const getUsrUrl = "http://localhost:3001/profile/"; //TODO: change when deploying
-
     if (token) {
       
       axios({
@@ -34,7 +33,7 @@ function App() {
           if (resp.data) {
             //token exists in DB   
             //fetch user from another api endpoint
-            
+           console.log(resp.data.userId) 
             fetch(getUsrUrl + resp.data.userId, { 
               method: "get",
               headers: {

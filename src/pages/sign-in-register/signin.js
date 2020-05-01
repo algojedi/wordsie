@@ -57,6 +57,7 @@ const SignIn = ({ history }) => {
     e.preventDefault();
     try {
       const result = await axios.post(url, { email, password });
+      //if authenticated, save returned token in session storage
       console.log("response received in sign in page ", result.data);
       if (result.data && result.data.success) {
         saveTokenInSession(result.data.token);

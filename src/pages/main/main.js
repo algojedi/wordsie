@@ -51,8 +51,7 @@ import WordSearchBar from "../../components/word-searchbar/word-searchbar"
 const Main = ({classes}) => {
   //const classes = useStyles();
   const wordSearchUrl = "http://localhost:3001/define?word=";
-  const addToCartUrl = "http://localhost:3001/addWordToCart";
-
+  
   const context = useContext(AuthContext);
   //word is the current word to search
   const [word, setWord] = useState("");
@@ -68,23 +67,22 @@ const Main = ({classes}) => {
     } //TODO: display error message due to no input in search field
     try {
       const result = await axios.get(wordSearchUrl + word);
-      //console.log("response received in main page word query ", result.data);
       if (result.data && result.status === 200) {
         setWordInfo(result.data);
         setShowDefinition(true);
         setWord("");
       }
     } catch (err) {
-      //TODO: label for material ui input error label
-      //'response' in err ? console.log(err.response.data.message) : console.log(err);
+      console.log(err) //TODO: label for material ui input error label
     }
   };
-
+  
+  const addToCartUrl = "http://localhost:3001/addWordToCart";
   const handleAddToCart = async () => {
     //e.preventDefault();
     try {
       const token = window.sessionStorage.getItem("token");
-
+      
       if (!token) { //return early if no token
         console.log("missing token from session");
         return;
@@ -97,7 +95,7 @@ const Main = ({classes}) => {
           Authorization: token,
         },
         data: {
-          word,
+          word: wordInfo.word,
         },
       });
       if (result.data && result.status === 200) {
