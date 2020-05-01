@@ -59,7 +59,7 @@ const WordDefinition = ({ wordInformation, addToCartBtn }) => {
           {wordInformation.word}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {wordInformation.part}
+          {wordInformation.part.toLowerCase()}
         </Typography>
         {defsToDisplay}
       </CardContent>

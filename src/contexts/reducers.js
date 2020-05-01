@@ -14,13 +14,14 @@ const addWordToCart = (wordInfo, state) => {
     }
   })
   updatedCart.push({ ...wordInfo });
-  return updatedCart;
+  return updatedCart; 
 };
 
 
 //state is word cart
 const removeWordFromCart = (wordId, state) => {
-  
+ //make post request to api  to remove word
+
   const updatedCart = state.filter(el => {
     return el._id !== wordId
   }  );
@@ -30,7 +31,7 @@ const removeWordFromCart = (wordId, state) => {
     return state;
   }
   //console.log('updated cart from remove word reducer ', updatedCart);
-  return updatedCart; //TODO: always returning empty cart!!!
+  return updatedCart; //TODO: always returning empty cart!? - fixed?
 
 };
 

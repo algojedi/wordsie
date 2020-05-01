@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
@@ -40,9 +38,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-// const saveTokenInSession = token => {
-//   window.sessionStorage.setItem("token", token);
-// };
 
 const Register = ({ history }) => {
   const classes = useStyles();
@@ -50,8 +45,6 @@ const Register = ({ history }) => {
   const context = useContext(AuthContext);
 
   const url = "http://localhost:3001/register";
-
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -77,7 +70,6 @@ const Register = ({ history }) => {
       }
     } catch (err) {
       console.log(err);
-      //'response' in err ? console.log(err.response.data.message) : console.log(err);
     }
   };
 

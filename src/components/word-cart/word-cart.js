@@ -10,56 +10,58 @@ import Divider from "@material-ui/core/Divider";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles(theme => ({
+import axios from "axios";
+
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    marginBottom: 50
+    marginBottom: 50,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
-    flexShrink: 0
+    flexShrink: 0,
   },
   secondaryHeading: {
     //styles the 'part' of the word
     fontSize: theme.typography.pxToRem(15),
     //color: theme.palette.text.secondary,
-    color: "#C2A878" // color of part
+    color: "#C2A878", // color of part
   },
   definition: {
     //margin: 5,
-    padding: theme.spacing(1, 0)
+    padding: theme.spacing(1, 0),
   },
   example: {
     padding: theme.spacing(0, 2),
-    fontStyle: "italic"
+    fontStyle: "italic",
   },
   number: {
     color: "#C2A878",
     marginRight: 8, // theme.spacing(0, 1),
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   details: {
     flexDirection: "column",
-    backgroundColor: "#F1F5F2"
+    backgroundColor: "#F1F5F2",
   },
   wordItem: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   removeBtn: {
     display: "flex",
-  //  backgroundColor: "red",
-  //  color: "white",
+    //  backgroundColor: "red",
+    //  color: "white",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   trash: {
     padding: theme.spacing(2, 2),
-    display: 'flex',
-    justifyContent: 'center',
-    backgroundColor: "#F1F5F2"
-  }
+    display: "flex",
+    justifyContent: "center",
+    backgroundColor: "#F1F5F2",
+  },
 }));
 
 //words parameter are all the words in the list
@@ -69,8 +71,40 @@ export default function WordCart({ words }) {
   const [expanded, setExpanded] = React.useState(false);
   if (!context.authenticated) return null;
 
+  const handleRemove = async (wordId) => {
+    //remove word from db
+    const url = "http://localhost:3001/removeWord";
+    try {
+      const token = window.sessionStorage.getItem("token");
 
-  const handleChange = panel => (event, isExpanded) => {
+      if (!token) {
+        //return early if no token
+        console.log("missing token from session. Can't remove word");
+        return;
+      }
+      const result = await axios({
+        url,
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        data: {
+          //data gets received as body
+          wordId,
+        },
+      });
+      if (result.status === 200) {
+        console.log('reply from server is ', result)
+        context.removeWordFromCart(wordId);
+      }
+    } catch (err) {
+      console.log(err);
+      //'response' in err ? console.log(err.response.data.message) : console.log(err);
+    }
+  };
+
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
   return (
@@ -123,7 +157,7 @@ export default function WordCart({ words }) {
             </ExpansionPanelDetails>
             <div className={classes.trash}>
               <Button
-                onClick={() => context.removeWordFromCart(w._id)}
+                onClick={() => handleRemove(w._id)}
                 variant="outlined"
                 color="secondary"
                 className={classes.removeBtn}

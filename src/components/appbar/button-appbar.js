@@ -62,7 +62,7 @@ let history = useHistory();
                 }
               }
             >
-              Logout
+              Sign out
             </Button>
           ) : (
             <Button

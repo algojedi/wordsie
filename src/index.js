@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/authContext'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
-import { blue, brown } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
     palette: {
@@ -14,7 +14,6 @@ const theme = createMuiTheme({
             info: {
             
             //main: "#28536B" //slate blue
-            //main: '#c4a695'
             contrastText: "white",
             main: "#c2a878", //light brown
             dark: '#b08e4f'
@@ -24,12 +23,6 @@ const theme = createMuiTheme({
         },
         
     },
-    // typography: {
-    //    button: {
-    //   color: 'white',
-      
-    // },
- // },
     
 })
 

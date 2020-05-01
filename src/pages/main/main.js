@@ -1,21 +1,22 @@
 import React, { useState, useContext } from "react";
 import Typography from "@material-ui/core/Typography";
 import AuthContext from "../../contexts/authContext";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import WordDefinition from "../../components/word-def/word-def";
 import WordCart from "../../components/word-cart/word-cart";
 import axios from "axios";
 import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
-import { withStyles} from '@material-ui/core/styles'
+import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import WordSearchBar from "../../components/word-searchbar/word-searchbar"
+import Box from '@material-ui/core/Box';
+import { useHistory } from "react-router-dom";
+import { TextField } from "@material-ui/core";
+import AlertDialog from "../../components/alert/delete-alert";
 
-//const useStyles = makeStyles((theme) => ({
-  const styles = theme => ({
+//const useStyles = makeStyles((theme) => ({ 
+const styles = (theme) => ({
   container: {
     // padding: "1px 3px",
     display: "flex",
@@ -27,16 +28,30 @@ import WordSearchBar from "../../components/word-searchbar/word-searchbar"
   listTitle: {
     padding: 24, // the padding applied to expansion panels by default
     paddingBottom: 12,
-    color: '#a3613d'
+    color: "#a3613d",
+  },
+  guestMsg: {
+    padding: 24, // the padding applied to expansion panels by default
+    color: "#a3613d",
+    cursor: "pointer",
+    fontSize: 12,
+  },
+  removeListBtn: {
+    border: "none",
+
+  },
+  listTitleContainer: {
+ display: "flex",
+ justifyContent: "space-between"
   },
   root: {
-      display: "flex",
-      background: "#28536B",
-      flexGrow: 1,
-      maxWidth: "100%",
-      padding: 0,
-      margin: 0,
-      justifyContent: "center"
+    display: "flex",
+    background: "#28536B",
+    flexGrow: 1,
+    maxWidth: "100%",
+    padding: 0,
+    margin: 0,
+    justifyContent: "center",
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -45,13 +60,12 @@ import WordSearchBar from "../../components/word-searchbar/word-searchbar"
   iconButton: {
     padding: 10,
   },
-
 });
 
-const Main = ({classes}) => {
+const Main = ({ classes }) => {
   //const classes = useStyles();
   const wordSearchUrl = "http://localhost:3001/define?word=";
-  
+  const history = useHistory();
   const context = useContext(AuthContext);
   //word is the current word to search
   const [word, setWord] = useState("");
@@ -59,32 +73,36 @@ const Main = ({classes}) => {
   const [wordInfo, setWordInfo] = useState({}); //includes word, part, definitions
   //showDefinition controls whether word definition (wordInfo) is displayed
   const [showDefinition, setShowDefinition] = useState(false);
+  const [invalidEntry, setInvalidEntry] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === "") {
+      setInvalidEntry(true);
       return;
-    } //TODO: display error message due to no input in search field
+    }
     try {
       const result = await axios.get(wordSearchUrl + word);
       if (result.data && result.status === 200) {
         setWordInfo(result.data);
         setShowDefinition(true);
+        setInvalidEntry(false);
         setWord("");
       }
     } catch (err) {
-      console.log(err) //TODO: label for material ui input error label
+      console.log(err);
+      setInvalidEntry(true);
     }
   };
-  
+
   const addToCartUrl = "http://localhost:3001/addWordToCart";
   const handleAddToCart = async () => {
-    //e.preventDefault();
     try {
       const token = window.sessionStorage.getItem("token");
-      
-      if (!token) { //return early if no token
-        console.log("missing token from session");
+
+      if (!token) {
+        //return early if no token
+        //   console.log("missing token from session");
         return;
       }
       const result = await axios({
@@ -107,15 +125,17 @@ const Main = ({classes}) => {
     }
   };
   return (
-    <React.Fragment> 
-      <Container className={classes.root} component="main" >
+    <React.Fragment>
+      <Container className={classes.root} component="main">
         <Paper component="form" className={classes.container}>
-          <InputBase
+          <TextField
             className={classes.input}
             placeholder="Word Search"
+            error={invalidEntry}
             value={word}
             onChange={(e) => setWord(e.target.value)}
           />
+
           <IconButton
             type="submit"
             onClick={handleSubmit}
@@ -145,10 +165,23 @@ const Main = ({classes}) => {
           wordInformation={wordInfo}
         />
       ) : null}
-
-      <Typography className={classes.listTitle} variant="h5" gutterBottom>
-      Your Word List 
-      </Typography>
+      {context.authenticated ? (
+        <Box className={classes.listTitleContainer}>
+        <Typography className={classes.listTitle} variant="h5" gutterBottom>
+          Your Word List
+        </Typography>
+<AlertDialog/>
+        </Box>
+      ) : (
+        <Typography
+          className={classes.guestMsg}
+          onClick={() => history.push("/signin")}
+          variant="h5"
+          gutterBottom
+        >
+          Sign in required to a save word list
+        </Typography>
+      )}
       <WordCart words={context.cart} />
     </React.Fragment>
   );
