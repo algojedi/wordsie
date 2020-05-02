@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import "./button-appbar.css";
 import { useHistory } from "react-router-dom";
-import { EMPTY_CART } from "../../contexts/reducers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +39,7 @@ let history = useHistory();
     <div>
       <AppBar elevation={0} className={classes.root} position="static">
         <Toolbar>
-          {/* ay not need hamburger menu pullout...
+          {/* TODO: implement hamburger icon for side nav if need be
             <IconButton
             edge="start"
             className={classes.menuButton}

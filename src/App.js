@@ -8,7 +8,7 @@ import Main from './pages/main/main'
 import { Switch, Route } from 'react-router-dom';
 import AuthContext from "./contexts/authContext";
 import axios from "axios";
-
+import api from "./api/api"
 
 function App() {
   
@@ -16,8 +16,9 @@ function App() {
 
   useEffect(() => {
     const token = window.sessionStorage.getItem("token");
-    const url = "http://localhost:3001/login"; //TODO: change when deploying
-    const getUsrUrl = "http://localhost:3001/profile/"; //TODO: change when deploying
+
+    const url = `${api.url}login`; 
+    const getUsrUrl = `${api.url}profile/`; 
     if (token) {
       
       axios({
@@ -30,9 +31,8 @@ function App() {
       })
         .then(resp => {
           if (resp.data) {
-            //token exists in DB   
-            //fetch user from another api endpoint
-           console.log(resp.data.userId) 
+            //token exists in DB... fetch user from a different api endpoint
+           //console.log(resp.data.userId) 
             fetch(getUsrUrl + resp.data.userId, { 
               method: "get",
               headers: {
@@ -48,10 +48,10 @@ function App() {
                   const { name, email, _id, cart } = user;
                   context.setUser( { name , email, _id } );
                   context.renewCart({ cart });
-                  console.log('cart from useEffect ', cart);
+                  //console.log('cart from useEffect ', cart);
                 } else {
                   context.setAuthenticated(false);
-                  console.log("auth denied from useEffect");
+                  //console.log("auth denied from useEffect");
                 }
               });
           }

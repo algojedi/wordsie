@@ -10,12 +10,12 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import AlertDialog from "../../components/alert/delete-alert";
 
-//const useStyles = makeStyles((theme) => ({ 
+//const useStyles = makeStyles((theme) => ({
 const styles = (theme) => ({
   container: {
     // padding: "1px 3px",
@@ -34,15 +34,15 @@ const styles = (theme) => ({
     padding: 24, // the padding applied to expansion panels by default
     color: "#a3613d",
     cursor: "pointer",
+    display: "inline-block",
     fontSize: 12,
   },
   removeListBtn: {
     border: "none",
-
   },
   listTitleContainer: {
- display: "flex",
- justifyContent: "space-between"
+    display: "flex",
+    justifyContent: "space-between",
   },
   root: {
     display: "flex",
@@ -74,7 +74,8 @@ const Main = ({ classes }) => {
   //showDefinition controls whether word definition (wordInfo) is displayed
   const [showDefinition, setShowDefinition] = useState(false);
   const [invalidEntry, setInvalidEntry] = useState(false);
-
+  //state to track whether use should be allowed to enter the displayed word into cart
+  const [invalidCartEntry, setInvalidCartEntry] = useState(true)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === "") {
@@ -87,6 +88,7 @@ const Main = ({ classes }) => {
         setWordInfo(result.data);
         setShowDefinition(true);
         setInvalidEntry(false);
+        setInvalidCartEntry(false);
         setWord("");
       }
     } catch (err) {
@@ -97,12 +99,10 @@ const Main = ({ classes }) => {
 
   const addToCartUrl = "http://localhost:3001/addWordToCart";
   const handleAddToCart = async () => {
+
     try {
       const token = window.sessionStorage.getItem("token");
-
-      if (!token) {
-        //return early if no token
-        //   console.log("missing token from session");
+      if (!token || invalidCartEntry) {
         return;
       }
       const result = await axios({
@@ -118,6 +118,7 @@ const Main = ({ classes }) => {
       });
       if (result.data && result.status === 200) {
         context.addWordToCart(result.data);
+        setInvalidCartEntry(true); //user can not continually add same word
       }
     } catch (err) {
       console.log(err);
@@ -167,10 +168,10 @@ const Main = ({ classes }) => {
       ) : null}
       {context.authenticated ? (
         <Box className={classes.listTitleContainer}>
-        <Typography className={classes.listTitle} variant="h5" gutterBottom>
-          Your Word List
-        </Typography>
-<AlertDialog/>
+          <Typography className={classes.listTitle} variant="h5" gutterBottom>
+            Your Word List
+          </Typography>
+          <AlertDialog />
         </Box>
       ) : (
         <Typography

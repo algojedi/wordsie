@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,6 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import axios from "axios";
+import api from "../../api/api"
+import AuthContext from "../../contexts/authContext";
 
 
 const useStyles = makeStyles({
@@ -24,6 +27,7 @@ const useStyles = makeStyles({
 
 export default function AlertDialog() {
   const [open, setOpen] = React.useState(false);
+  const context = useContext(AuthContext);
 
   const classes = useStyles();
   const handleClickOpen = () => {
@@ -34,6 +38,35 @@ export default function AlertDialog() {
     setOpen(false);
   };
 
+  const handleDeleteList = async () => {
+  const url = `${api.url}emptyCart`;   
+  // const url = "http://localhost:3001/emptyCart";
+    try {
+      const token = window.sessionStorage.getItem("token");
+
+      if (!token) {
+        return;
+      }
+      const result = await axios({
+        url,
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        
+      });
+      if (result.data && result.status === 200) {
+
+            context.renewCart({ cart: [] });
+      }
+    } catch (err) {
+      console.log(err);
+      //'response' in err ? console.log(err.response.data.message) : console.log(err);
+    }
+    setOpen(false);
+  
+  }
   return (
     <React.Fragment>
       <Button className={classes.trashBtn} onClick={handleClickOpen}>
@@ -59,7 +92,7 @@ export default function AlertDialog() {
           <Button onClick={handleClose} color="primary">
           Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleDeleteList} color="primary" autoFocus>
           OK
           </Button>
         </DialogActions>

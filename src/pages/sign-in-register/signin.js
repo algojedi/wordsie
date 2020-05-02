@@ -1,59 +1,64 @@
-import React, { useState, useContext } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import React, { useState, useContext } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Paper from '@material-ui/core/Paper';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 import axios from "axios";
-import AuthContext from '../../contexts/authContext';
+import AuthContext from "../../contexts/authContext";
 import Copyright from "../../components/copyright/copyright";
+import api from "../../api/api";
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  error: {
+    color: theme.palette.secondary.dark
+  },
+  
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-const saveTokenInSession = token => {
-    window.sessionStorage.setItem('token',token )
-}
+const saveTokenInSession = (token) => {
+  window.sessionStorage.setItem("token", token);
+};
 
-const SignIn = ({ history }) => {
-  const classes = useStyles();
+const SignIn = ({ history, theme }) => {
+  const classes = useStyles(theme);
   const context = useContext(AuthContext);
 
-  const url = "http://localhost:3001/login";
-  const getUsrUrl = "http://localhost:3001/profile/"; //TODO: change when deploying
-
-  //const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const url = `${api.url}login`;
+  const getUsrUrl = `${api.url}profile/`;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = async e => {
+  //display error msg when username and password do not match
+  const [errorMsg, setErrorMsg] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const result = await axios.post(url, { email, password });
@@ -68,30 +73,31 @@ const SignIn = ({ history }) => {
         method: "get",
         headers: {
           "Content-Type": "application/json",
-          Authorization: result.data.token
-        }
+          Authorization: result.data.token,
+        },
       })
-        .then(data => data.json())
-        .then(user => {
+        .then((data) => data.json())
+        .then((user) => {
           //console.log("user from fetch in sign query to profile endpt", user);
           if (user && user.email) {
             const { name, email, _id, cart } = user;
+            setErrorMsg("");
             context.setUser({ name, email, _id });
             context.renewCart({ cart });
             context.setAuthenticated(true); //this will route to /main because of route condition in app.js
           } else {
             context.setAuthenticated(false);
-            console.log("auth denied in sign in, no profile in db?");
-            //TODO: password/email didn't match
+            //console.log("auth denied in sign in, no profile in db?");
+            setErrorMsg("incorrect username or password");
           }
         })
 
-        .catch(err => {
+        .catch((err) => {
           console.log("error when trying to fetch from login: ", err);
         });
-
     } catch (err) {
       console.log(err);
+      setErrorMsg("incorrect username or password");
       //'response' in err ? console.log(err.response.data.message) : console.log(err);
     }
   };
@@ -118,7 +124,7 @@ const SignIn = ({ history }) => {
             autoComplete="email"
             autoFocus
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -130,7 +136,7 @@ const SignIn = ({ history }) => {
             type="password"
             // id="password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
           />
           <FormControlLabel
@@ -166,7 +172,13 @@ const SignIn = ({ history }) => {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+
+      <Box mt={2}><Paper component={"div"} elevation={0} className={classes.error}>
+      {errorMsg}
+
+      </Paper>
+      </Box>
+      <Box mt={6}>
         <Copyright />
       </Box>
     </Container>

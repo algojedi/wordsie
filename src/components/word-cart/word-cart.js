@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   removeBtn: {
     display: "flex",
     //  backgroundColor: "red",
-    //  color: "white",
+    color: theme.palette.secondary.dark, //"white",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -100,7 +100,6 @@ export default function WordCart({ words }) {
       }
     } catch (err) {
       console.log(err);
-      //'response' in err ? console.log(err.response.data.message) : console.log(err);
     }
   };
 
@@ -173,8 +172,3 @@ export default function WordCart({ words }) {
   );
 }
 
-//F1F5F2 off-white
-// 14281D dark green
-// hunter green 355834
-// 6E633D coyote brown - semi dark
-// C2A878 - french beige

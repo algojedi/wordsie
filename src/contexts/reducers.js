@@ -45,8 +45,8 @@ export const cartReducer = (state, action) => {
     case RENEW_CART: 
     //  console.log('new cart state from renew cart reducer should be ', action.payload.cart);
       return action.payload.cart; //initializes state to payload  
-    case EMPTY_CART:
-      return {}
+    // case EMPTY_CART:
+    //   return []
     default: 
       return state;
   }

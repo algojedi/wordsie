@@ -9,7 +9,6 @@ import "./welcome.css";
 import { Container } from "@material-ui/core";
 import light from "../../assets/lightbulb.svg";
 import AuthContext from "../../contexts/authContext";
-//import { withStyles} from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
 
@@ -122,9 +121,9 @@ const Welcome = ({ history, theme }) => {
           -Pearl Strachan Hurd
         </blockquote>
       </div>
-      <footer className="footer">
+      {/* <footer className="footer">
         <a href="#">Contact Us</a>
-      </footer>
+      </footer> */}
     </div>
   );
 };
