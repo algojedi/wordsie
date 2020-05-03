@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Button from "@material-ui/core/Button";
-
+import api from "../../api/api"
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   secondaryHeading: {
     //styles the 'part' of the word
     fontSize: theme.typography.pxToRem(15),
-    //color: theme.palette.text.secondary,
     color: "#C2A878", // color of part
   },
   definition: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   number: {
     color: "#C2A878",
-    marginRight: 8, // theme.spacing(0, 1),
+    marginRight: 8, 
     fontWeight: "bold",
   },
   details: {
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
   },
   removeBtn: {
     display: "flex",
-    //  backgroundColor: "red",
     color: theme.palette.secondary.dark, //"white",
     alignItems: "center",
     justifyContent: "center",
@@ -73,7 +71,8 @@ export default function WordCart({ words }) {
 
   const handleRemove = async (wordId) => {
     //remove word from db
-    const url = "http://localhost:3001/removeWord";
+
+    const url = `${api.url}removeWord`;
     try {
       const token = window.sessionStorage.getItem("token");
 
@@ -95,7 +94,7 @@ export default function WordCart({ words }) {
         },
       });
       if (result.status === 200) {
-        console.log('reply from server is ', result)
+        // console.log('reply from server is ', result)
         context.removeWordFromCart(wordId);
       }
     } catch (err) {
@@ -171,4 +170,3 @@ export default function WordCart({ words }) {
     </div>
   );
 }
-

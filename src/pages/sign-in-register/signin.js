@@ -3,7 +3,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Paper from '@material-ui/core/Paper';
+import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link as RouterLink } from "react-router-dom";
@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   error: {
-    color: theme.palette.secondary.dark
+    color: theme.palette.secondary.dark,
   },
-  
+
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
@@ -47,7 +47,7 @@ const saveTokenInSession = (token) => {
   window.sessionStorage.setItem("token", token);
 };
 
-const SignIn = ({ history, theme }) => {
+const SignIn = ({ theme }) => {
   const classes = useStyles(theme);
   const context = useContext(AuthContext);
 
@@ -63,7 +63,7 @@ const SignIn = ({ history, theme }) => {
     try {
       const result = await axios.post(url, { email, password });
       //if authenticated, save returned token in session storage
-      console.log("response received in sign in page ", result.data);
+      //console.log("response received in sign in page ", result.data);
       if (result.data && result.data.success) {
         saveTokenInSession(result.data.token);
       }
@@ -78,7 +78,6 @@ const SignIn = ({ history, theme }) => {
       })
         .then((data) => data.json())
         .then((user) => {
-          //console.log("user from fetch in sign query to profile endpt", user);
           if (user && user.email) {
             const { name, email, _id, cart } = user;
             setErrorMsg("");
@@ -149,7 +148,6 @@ const SignIn = ({ history, theme }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            // onClick={handleSubmit}
           >
             Sign In
           </Button>
@@ -173,10 +171,10 @@ const SignIn = ({ history, theme }) => {
         </form>
       </div>
 
-      <Box mt={2}><Paper component={"div"} elevation={0} className={classes.error}>
-      {errorMsg}
-
-      </Paper>
+      <Box mt={2}>
+        <Paper component={"div"} elevation={0} className={classes.error}>
+          {errorMsg}
+        </Paper>
       </Box>
       <Box mt={6}>
         <Copyright />

@@ -48,10 +48,8 @@ function App() {
                   const { name, email, _id, cart } = user;
                   context.setUser( { name , email, _id } );
                   context.renewCart({ cart });
-                  //console.log('cart from useEffect ', cart);
                 } else {
                   context.setAuthenticated(false);
-                  //console.log("auth denied from useEffect");
                 }
               });
           }
@@ -61,6 +59,9 @@ function App() {
 
         });
     }
+    //TODO: make context into a single object w properties
+    //because context is currently simply a set of fields/values, below disabling needed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
   return (

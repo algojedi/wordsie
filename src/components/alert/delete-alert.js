@@ -40,7 +40,6 @@ export default function AlertDialog() {
 
   const handleDeleteList = async () => {
   const url = `${api.url}emptyCart`;   
-  // const url = "http://localhost:3001/emptyCart";
     try {
       const token = window.sessionStorage.getItem("token");
 

@@ -15,10 +15,10 @@ import { useHistory } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import AlertDialog from "../../components/alert/delete-alert";
 
-//const useStyles = makeStyles((theme) => ({
+import api from "../../api/api"
+
 const styles = (theme) => ({
   container: {
-    // padding: "1px 3px",
     display: "flex",
     alignItems: "center",
     minWidth: 275,
@@ -27,15 +27,19 @@ const styles = (theme) => ({
   },
   listTitle: {
     padding: 24, // the padding applied to expansion panels by default
-    paddingBottom: 12,
+    paddingBottom: 8,
     color: "#a3613d",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: 16,
+      fontWeight: "bold"
+    }
   },
   guestMsg: {
     padding: 24, // the padding applied to expansion panels by default
     color: "#a3613d",
     cursor: "pointer",
     display: "inline-block",
-    fontSize: 12,
+    fontSize: 14,
   },
   removeListBtn: {
     border: "none",
@@ -62,9 +66,9 @@ const styles = (theme) => ({
   },
 });
 
-const Main = ({ classes }) => {
-  //const classes = useStyles();
-  const wordSearchUrl = "http://localhost:3001/define?word=";
+const Main = ({ classes }) => { //classes coming from withStyles HOC
+
+  const wordSearchUrl = `${api.url}define?word=`;   
   const history = useHistory();
   const context = useContext(AuthContext);
   //word is the current word to search
@@ -159,7 +163,7 @@ const Main = ({ classes }) => {
                 color="primary"
                 className={classes.submit}
               >
-                Add to List
+                Add to My List
               </Button>
             );
           }}
