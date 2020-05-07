@@ -11,8 +11,7 @@ import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: "#28536B"
-    //elevation: 0
+    backgroundColor: "#28536B",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
     marginRight: "auto",
     padding: 5,
-    cursor: "pointer"
+    cursor: "pointer",
   },
   appName_lower: {
     margin: 0,
@@ -33,41 +32,34 @@ const useStyles = makeStyles((theme) => ({
 export default function ButtonAppBar() {
   const classes = useStyles();
   const context = useContext(AuthContext);
-let history = useHistory();
+  let history = useHistory();
 
   return (
     <div>
       <AppBar elevation={0} className={classes.root} position="static">
         <Toolbar>
-          {/* TODO: implement hamburger icon for side nav if need be
-            <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
+          <Typography
+            onClick={() => history.push("/")}
+            variant="h6"
+            className={classes.title}
           >
-            <MenuIcon />
-          </IconButton> */}
-          <Typography onClick={() => history.push('/')} variant="h6" className={classes.title}>
-            <div  className="appName">Wordsie</div>
-            <Typography className="appName_lower">The Words App</Typography>
+            <div className="appName">Wordsie</div>
+            <Typography className={classes.appName_lower}>
+              The Words App
+            </Typography>
           </Typography>
           {context.authenticated ? (
             <Button
               color="inherit"
-              onClick={() => { 
+              onClick={() => {
                 context.signOut();
-                history.push('/');
-                }
-              }
+                history.push("/");
+              }}
             >
               Sign out
             </Button>
           ) : (
-            <Button
-              color="inherit"
-              onClick={() => history.push("/signin")}
-            >
+            <Button color="inherit" onClick={() => history.push("/signin")}>
               Sign in
             </Button>
           )}
