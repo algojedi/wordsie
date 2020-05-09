@@ -24,8 +24,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   appName_lower: {
-    margin: 0,
-    paddding: 0,
+    lineHeight: 1,
   },
 }));
 
@@ -45,7 +44,7 @@ export default function ButtonAppBar() {
           >
             <div className="appName">Wordsie</div>
             <Typography className={classes.appName_lower}>
-              The Words App
+              The Word App
             </Typography>
           </Typography>
           {context.authenticated ? (

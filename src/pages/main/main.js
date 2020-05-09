@@ -101,7 +101,8 @@ const Main = ({ classes }) => { //classes coming from withStyles HOC
     }
   };
 
-  const addToCartUrl = "http://localhost:3001/addWordToCart";
+  //const addToCartUrl = "http://localhost:3001/addWordToCart";
+  const addToCartUrl = `${api.url}addWordToCart`
   const handleAddToCart = async () => {
 
     try {
