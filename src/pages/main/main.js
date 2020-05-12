@@ -15,24 +15,28 @@ import { useHistory } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import AlertDialog from "../../components/alert/delete-alert";
 
-import api from "../../api/api"
+import api from "../../api/api";
 
 const styles = (theme) => ({
-  container: {
+  searchbarContainer: {
     display: "flex",
     alignItems: "center",
     minWidth: 275,
     maxWidth: 500,
     margin: 15,
   },
+  // mainContainer: {
+  //   width: "30%",
+  //   margin: "10 auto",
+  // },
   listTitle: {
     padding: 24, // the padding applied to expansion panels by default
     paddingBottom: 8,
     color: "#a3613d",
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: 16,
-      fontWeight: "bold"
-    }
+      fontWeight: "bold",
+    },
   },
   guestMsg: {
     padding: 24, // the padding applied to expansion panels by default
@@ -66,9 +70,10 @@ const styles = (theme) => ({
   },
 });
 
-const Main = ({ classes }) => { //classes coming from withStyles HOC
+const Main = ({ classes }) => {
+  //classes coming from withStyles HOC
 
-  const wordSearchUrl = `${api.url}define?word=`;   
+  const wordSearchUrl = `${api.url}define?word=`;
   const history = useHistory();
   const context = useContext(AuthContext);
   //word is the current word to search
@@ -79,7 +84,7 @@ const Main = ({ classes }) => { //classes coming from withStyles HOC
   const [showDefinition, setShowDefinition] = useState(false);
   const [invalidEntry, setInvalidEntry] = useState(false);
   //state to track whether use should be allowed to enter the displayed word into cart
-  const [invalidCartEntry, setInvalidCartEntry] = useState(true)
+  const [invalidCartEntry, setInvalidCartEntry] = useState(true);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === "") {
@@ -102,9 +107,8 @@ const Main = ({ classes }) => { //classes coming from withStyles HOC
   };
 
   //const addToCartUrl = "http://localhost:3001/addWordToCart";
-  const addToCartUrl = `${api.url}addWordToCart`
+  const addToCartUrl = `${api.url}addWordToCart`;
   const handleAddToCart = async () => {
-
     try {
       const token = window.sessionStorage.getItem("token");
       if (!token || invalidCartEntry) {
@@ -133,7 +137,7 @@ const Main = ({ classes }) => { //classes coming from withStyles HOC
   return (
     <React.Fragment>
       <Container className={classes.root} component="main">
-        <Paper component="form" className={classes.container}>
+        <Paper component="form" className={classes.searchbarContainer}>
           <TextField
             className={classes.input}
             placeholder="Word Search"
@@ -153,42 +157,43 @@ const Main = ({ classes }) => { //classes coming from withStyles HOC
           </IconButton>
         </Paper>
       </Container>
-
-      {showDefinition ? (
-        <WordDefinition
-          addToCartBtn={() => {
-            return (
-              <Button
-                onClick={handleAddToCart}
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Add to My List
-              </Button>
-            );
-          }}
-          wordInformation={wordInfo}
-        />
-      ) : null}
-      {context.authenticated ? (
-        <Box className={classes.listTitleContainer}>
-          <Typography className={classes.listTitle} variant="h5" gutterBottom>
-            Your Word List
+      <Paper component="div" className="mainContainer">
+        {showDefinition ? (
+          <WordDefinition
+            addToCartBtn={() => {
+              return (
+                <Button
+                  onClick={handleAddToCart}
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Add to My List
+                </Button>
+              );
+            }}
+            wordInformation={wordInfo}
+          />
+        ) : null}
+        {context.authenticated ? (
+          <Box className={classes.listTitleContainer}>
+            <Typography className={classes.listTitle} variant="h5" gutterBottom>
+              Your Word List
+            </Typography>
+            <AlertDialog />
+          </Box>
+        ) : (
+          <Typography
+            className={classes.guestMsg}
+            onClick={() => history.push("/signin")}
+            variant="h5"
+            gutterBottom
+          >
+            Sign in required to a save word list
           </Typography>
-          <AlertDialog />
-        </Box>
-      ) : (
-        <Typography
-          className={classes.guestMsg}
-          onClick={() => history.push("/signin")}
-          variant="h5"
-          gutterBottom
-        >
-          Sign in required to a save word list
-        </Typography>
-      )}
-      <WordCart words={context.cart} />
+        )}
+        <WordCart words={context.cart} />
+      </Paper>
     </React.Fragment>
   );
 };
