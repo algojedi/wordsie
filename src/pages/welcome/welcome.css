@@ -1,46 +1,47 @@
 .img {
-  width: 100%;
+	width: 100%;
 }
 .imgWrapper {
-  min-width: 200px;
-  margin: 30px;
-  /* border: 2px solid green; */
+	min-width: 200px;
+	margin: 30px;
+	/* border: 2px solid green; */
 }
 
 .noun {
-  color: #c2948a;
-  font-style: italic;
-  font-size: 0.75em;
+	color: #c2948a;
+	font-style: italic;
+	font-size: 0.75em;
 }
 .def {
-  font-weight: bold;
-  margin-right: 3px;
-  line-height: 1.5;
+	font-weight: bold;
+	margin-right: 3px;
+	line-height: 1.5;
 }
 .register-link {
-  cursor: pointer;
-  font-style: italic;
+	cursor: pointer;
+	font-style: italic;
 }
 .quote {
-    margin: 50px 25px;
-    color: grey;
-    text-align: center;
-    line-height: 1.5;
+	margin: 50px 25px;
+	color: grey;
+	text-align: center;
+	line-height: 1.5;
 }
 .footer {
-  background: black;
-  color: white;
+	background: black;
+	color: white;
 }
 
 .footer > a {
-  color: white;
-  text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 
-@media screen and (max-width : 715px) {
-.imgWrapper {
-
-    min-width: 100px;
-    margin: 15px;
-}
+@media screen and (max-width: 715px) {
+	.imgWrapper {
+		min-width: 100px;
+		max-width: 150px;
+		/*   border: 2px solid red; */
+		margin: 10px;
+	}
 }
