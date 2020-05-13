@@ -142,7 +142,7 @@ const Main = ({ classes }) => {
             placeholder="Word Search"
             error={invalidEntry}
             value={word}
-            onChange={(e) => setWord(e.target.value)}
+            onChange={(e) => setWord(e.target.value.toLowerCase())}
           />
 
           <IconButton
