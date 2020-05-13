@@ -14,7 +14,7 @@ import Box from "@material-ui/core/Box";
 import { useHistory } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import AlertDialog from "../../components/alert/delete-alert";
-
+import "./main.css";
 import api from "../../api/api";
 
 const styles = (theme) => ({
@@ -106,7 +106,6 @@ const Main = ({ classes }) => {
     }
   };
 
-  //const addToCartUrl = "http://localhost:3001/addWordToCart";
   const addToCartUrl = `${api.url}addWordToCart`;
   const handleAddToCart = async () => {
     try {
@@ -166,6 +165,7 @@ const Main = ({ classes }) => {
                   onClick={handleAddToCart}
                   variant="contained"
                   color="primary"
+                  disabled={invalidCartEntry}
                   className={classes.submit}
                 >
                   Add to My List
