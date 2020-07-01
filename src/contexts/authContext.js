@@ -1,17 +1,6 @@
 import React, { useState, useReducer, createContext } from "react";
 import api from "../api/api";
-
-// import {
-//   ADD_WORD,
-//   REMOVE_WORD,
-//   RENEW_CART,
-//   cartReducer,
-//   EMPTY_CART,
-// } from "./reducers";
 import axios from "axios";
-
-
-
 import cloneDeep from "lodash/cloneDeep";
 export const ADD_WORD = "ADD_WORD";
 export const REMOVE_WORD = "REMOVE_WORD";
@@ -20,12 +9,13 @@ export const EMPTY_CART = "EMPTY_CART";
 
 const AuthContext = createContext(); //creates Provider
 
+//------- cart reducer logic ------------
+
 const addWordToCart = (wordInfo, state) => {
   const updatedCart = cloneDeep(state); //state is an array of word information objects
   //check if word already exists in cart
   updatedCart.forEach((w) => {
     if (w._id.toString() === wordInfo._id.toString()) {
-      //NOT SURE IF THIS COMPARISON WILL WORK
       return state;
     }
   });
@@ -61,29 +51,7 @@ export const cartReducer = (state, action) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//-------- context -----------------
 
 export const AuthContextProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -116,8 +84,7 @@ export const AuthContextProvider = ({ children }) => {
           "Content-Type": "application/json",
           Authorization: token,
         },
-      }).catch(err => console.log(err))
-      //then((resp) => console.log(resp));
+      }).catch((err) => console.log(err));
     }
 
     setUser(null);

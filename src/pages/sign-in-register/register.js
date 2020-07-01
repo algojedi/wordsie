@@ -65,7 +65,6 @@ const Register = ({ history }) => {
         history.push("/main");
       } else {
         context.setAuthenticated(false);
-        //console.log("auth denied in sign in, no profile in db?");
         setErrorMsg("invalid username or password");
       }
     } catch (err) {
