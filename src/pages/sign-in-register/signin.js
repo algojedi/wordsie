@@ -53,51 +53,42 @@ const SignIn = ({ theme }) => {
 
   const url = `${api.url}login`;
   const getUsrUrl = `${api.url}profile/`;
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   //display error msg when username and password do not match
   const [errorMsg, setErrorMsg] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const result = await axios.post(url, { email, password });
       //if authenticated, save returned token in session storage
-      //console.log("response received in sign in page ", result.data);
-      if (result.data && result.data.success) {
-        saveTokenInSession(result.data.token);
+      const { userId, token } = result.data
+      if (result.status === 200) {
+        saveTokenInSession(token);
       }
-      /////--- use id to load user ---
-      fetch(getUsrUrl + result.data.userId, {
-        //fetch is working fine
+      // --- use id to load user ---
+      const jsonData = await fetch(getUsrUrl + userId, {
         method: "get",
         headers: {
           "Content-Type": "application/json",
-          Authorization: result.data.token,
+          Authorization: token
         },
       })
-        .then((data) => data.json())
-        .then((user) => {
-          if (user && user.email) {
-            const { name, email, _id, cart } = user;
-            setErrorMsg("");
-            context.setUser({ name, email, _id });
-            context.renewCart({ cart });
-            context.setAuthenticated(true); //this will route to /main because of route condition in app.js
-          } else {
-            context.setAuthenticated(false);
-            //console.log("auth denied in sign in, no profile in db?");
-            setErrorMsg("incorrect username or password");
-          }
-        })
-
-        .catch((err) => {
-          console.log("error when trying to fetch from login: ", err);
-        });
+      const user = await jsonData.json()
+      if (user && user.email) {
+          const { name, email, cart } = user;
+          setErrorMsg("");
+          context.setUser({ name, email, userId });
+          context.renewCart({ cart });
+          context.setAuthenticated(true); //this will route to /main because of route condition in app.js
+      } else {
+          context.setAuthenticated(false);
+          setErrorMsg("incorrect username or password");
+        }
     } catch (err) {
       console.log(err);
-      setErrorMsg("incorrect username or password");
-      //'response' in err ? console.log(err.response.data.message) : console.log(err);
+      setErrorMsg("Something went wrong. Please try again later");
     }
   };
 
