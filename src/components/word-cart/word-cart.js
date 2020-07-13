@@ -94,7 +94,6 @@ export default function WordCart({ words }) {
         },
       });
       if (result.status === 200) {
-        // console.log('reply from server is ', result)
         context.removeWordFromCart(wordId);
       }
     } catch (err) {
