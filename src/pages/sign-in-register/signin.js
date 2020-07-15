@@ -24,23 +24,23 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.main
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(1)
     },
     error: {
-        color: theme.palette.secondary.dark,
+        color: theme.palette.secondary.dark
     },
 
     submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+        margin: theme.spacing(3, 0, 2)
+    }
 }))
 
 const saveTokenInSession = (token) => {
@@ -51,46 +51,48 @@ const SignIn = ({ theme }) => {
     const classes = useStyles(theme)
     const context = useContext(AuthContext)
 
-  const url = `${api.url}login`;
-  const getUsrUrl = `${api.url}profile/`;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  //display error msg when username and password do not match
-  const [errorMsg, setErrorMsg] = useState("");
+    const url = `${api.url}login`
+    const getUsrUrl = `${api.url}profile/`
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    //display error msg when username and password do not match
+    const [errorMsg, setErrorMsg] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const result = await axios.post(url, { email, password });
-      //if authenticated, save returned token in session storage
-      const { userId, token } = result.data
-      if (result.status === 200) {
-        saveTokenInSession(token);
-      }
-      // --- use id to load user ---
-      const jsonData = await fetch(getUsrUrl + userId, {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token
-        },
-      })
-      const user = await jsonData.json()
-      if (user && user.email) {
-          const { name, email, cart } = user;
-          setErrorMsg("");
-          context.setUser({ name, email, userId });
-          context.renewCart({ cart });
-          context.setAuthenticated(true); //this will route to /main because of route condition in app.js
-      } else {
-          context.setAuthenticated(false);
-          setErrorMsg("incorrect username or password");
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const result = await axios.post(url, { email, password })
+            //if authenticated, save returned token in session storage
+            
+            if (result.status !== 200) {
+                throw new Error(result.data)
+            } 
+            const { userId, token } = result.data
+            saveTokenInSession(token)
+            // --- use id to load user ---
+            const jsonData = await fetch(getUsrUrl, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token
+                }
+            })
+            const user = await jsonData.json()
+            if (user && user.email) {
+                const { name, email, cart } = user
+                setErrorMsg('')
+                context.setUser({ name, email, userId })
+                context.renewCart({ cart })
+                context.setAuthenticated(true) //this will route to /main because of route condition in app.js
+            } else {
+                context.setAuthenticated(false)
+                setErrorMsg('incorrect username or password')
+            }
+        } catch (err) {
+            console.log(err)
+            setErrorMsg('Something went wrong. Please try again later')
         }
-    } catch (err) {
-      console.log(err);
-      setErrorMsg("Something went wrong. Please try again later");
     }
-
     return (
         <Container component='main' maxWidth='xs'>
             <CssBaseline />

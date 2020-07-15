@@ -85,6 +85,7 @@ const Main = ({ classes }) => {
   const [invalidEntry, setInvalidEntry] = useState(false);
   //state to track whether use should be allowed to enter the displayed word into cart
   const [invalidCartEntry, setInvalidCartEntry] = useState(true);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === "") {
@@ -142,7 +143,7 @@ const Main = ({ classes }) => {
             placeholder="Word Search"
             error={invalidEntry}
             value={word}
-            onChange={(e) => setWord(e.target.value.toLowerCase())}
+            onChange={(e) => setWord(e.target.value)}
           />
 
           <IconButton

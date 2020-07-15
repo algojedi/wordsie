@@ -13,47 +13,40 @@ import api from './api/api'
 function App() {
     const context = useContext(AuthContext)
 
-    useEffect(() => {
-        const token = window.sessionStorage.getItem('token')
-
-        const url = `${api.url}login`
-        const getUsrUrl = `${api.url}profile/`
-        if (token) {
-            axios({
-                url,
-                method: 'post',
+    const fetchUser = async (token) => {
+        try {
+           
+            const getUsrUrl = `${api.url}profile/`
+            // token exists in DB... fetch user from a different api endpoint
+            // const jsonData = await fetch(getUsrUrl + userId, {
+            const jsonData = await fetch(getUsrUrl, {
+                method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token,
-                },
+                    Authorization: token
+                }
             })
-                .then((resp) => {
-                    if (resp.data) {
-                        //token exists in DB... fetch user from a different api endpoint
-                        fetch(getUsrUrl + resp.data.userId, {
-                            method: 'get',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: token,
-                            },
-                        })
-                            .then((data) => data.json())
-                            .then((user) => {
-                                if (user && user.email) {
-                                    context.setAuthenticated(true)
-                                    const { name, email, _id, cart } = user
-                                    context.setUser({ name, email, _id })
-                                    context.renewCart({ cart })
-                                } else {
-                                    context.setAuthenticated(false)
-                                }
-                            })
-                    }
-                })
-                .catch((err) => {
-                    console.log('error when trying to fetch: ', err)
-                })
+            console.log({jsonData})
+            const user = await jsonData.json()
+
+            console.log({user})
+            if (user && user.email) {
+                context.setAuthenticated(true)
+                const { name, email, _id, cart } = user
+                context.setUser({ name, email, _id })
+                context.renewCart({ cart })
+            } else {
+                context.setAuthenticated(false)
+            }
+        } catch (error) {
+            console.log(error.message)
+            return
         }
+    }
+    useEffect(() => {
+        const token = window.sessionStorage.getItem('token')
+        if (!token) return 
+        fetchUser(token)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
