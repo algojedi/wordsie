@@ -82,7 +82,7 @@ const SignIn = ({ theme }) => {
                 const { name, email, cart } = user
                 setErrorMsg('')
                 context.setUser({ name, email, userId })
-                context.setCart({ cart })
+                context.setCart( cart )
             } else {
                 setErrorMsg('incorrect username or password')
             }

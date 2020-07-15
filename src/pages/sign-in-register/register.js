@@ -60,7 +60,8 @@ const Register = ({ history }) => {
         window.sessionStorage.setItem("token", token);
         setErrorMsg("");
         context.setUser({ name, email, _id: id });
-        context.setCart({ cart: [] });
+        // context.setCart({ cart: [] });
+        context.setCart([])
         history.push("/main");
       } else {
         setErrorMsg("invalid username or password");

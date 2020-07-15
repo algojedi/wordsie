@@ -34,10 +34,13 @@ function App() {
                 // context.setAuthenticated(true)
                 const { name, email, _id, cart } = user
                 context.setUser({ name, email, _id })
-                context.setCart({ cart })
+                // context.setCart({ cart })
+                context.setCart( cart )
+
             } else {
                 // context.setAuthenticated(false)
             }
+                //console.log({cart})
         } catch (error) {
             console.log(error.message)
             return

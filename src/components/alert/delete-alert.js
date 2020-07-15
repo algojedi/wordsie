@@ -56,8 +56,8 @@ export default function AlertDialog() {
         
       });
       if (result.data && result.status === 200) {
-
-            context.renewCart({ cart: [] });
+            context.setCart([]);
+            // context.setCart({ cart: [] });
       }
     } catch (err) {
       console.log(err);

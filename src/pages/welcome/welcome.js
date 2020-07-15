@@ -90,7 +90,7 @@ const Welcome = ({ history, theme }) => {
             >
               Enter site
             </Button>
-            {context.authenticated ? null : (
+            {context.user ? null : (
               <Button
                 variant="contained"
                 className={classes.btnSignin}
@@ -101,7 +101,7 @@ const Welcome = ({ history, theme }) => {
               </Button>
             )}
           </CardActions>
-          {context.authenticated ? null : (
+          {context.user ? null : (
             <Typography className={classes.register}>
               Don't have an account?{" "}
               <span

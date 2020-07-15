@@ -49,10 +49,8 @@ export default function ButtonAppBar() {
                 }
             }).catch((err) => console.log(err))
         }
-
         window.sessionStorage.removeItem('token')
         context.setUser(null)
-        // context.renewCart([])
         history.push('/')
     }
 
