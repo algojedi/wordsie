@@ -31,12 +31,12 @@ function App() {
 
             console.log({user})
             if (user && user.email) {
-                context.setAuthenticated(true)
+                // context.setAuthenticated(true)
                 const { name, email, _id, cart } = user
                 context.setUser({ name, email, _id })
-                context.renewCart({ cart })
+                context.setCart({ cart })
             } else {
-                context.setAuthenticated(false)
+                // context.setAuthenticated(false)
             }
         } catch (error) {
             console.log(error.message)
@@ -56,7 +56,7 @@ function App() {
             <Switch>
                 <Route exact path='/' component={Welcome} />
                 <Route path='/signin'>
-                    {context.authenticated ? <Main /> : <SignIn />}
+                    {context.user ? <Main /> : <SignIn /> }
                 </Route>
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />

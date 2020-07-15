@@ -60,11 +60,9 @@ const Register = ({ history }) => {
         window.sessionStorage.setItem("token", token);
         setErrorMsg("");
         context.setUser({ name, email, _id: id });
-        context.renewCart({ cart: [] });
-        context.setAuthenticated(true); //this will route to /main because of route condition in app.js
+        context.setCart({ cart: [] });
         history.push("/main");
       } else {
-        context.setAuthenticated(false);
         setErrorMsg("invalid username or password");
       }
     } catch (err) {

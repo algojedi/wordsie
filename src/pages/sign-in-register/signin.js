@@ -82,10 +82,8 @@ const SignIn = ({ theme }) => {
                 const { name, email, cart } = user
                 setErrorMsg('')
                 context.setUser({ name, email, userId })
-                context.renewCart({ cart })
-                context.setAuthenticated(true) //this will route to /main because of route condition in app.js
+                context.setCart({ cart })
             } else {
-                context.setAuthenticated(false)
                 setErrorMsg('incorrect username or password')
             }
         } catch (err) {

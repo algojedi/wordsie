@@ -85,7 +85,9 @@ const Main = ({ classes }) => {
   const [invalidEntry, setInvalidEntry] = useState(false);
   //state to track whether use should be allowed to enter the displayed word into cart
   const [invalidCartEntry, setInvalidCartEntry] = useState(true);
-  
+
+  console.log({user: context.user})
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === "") {
