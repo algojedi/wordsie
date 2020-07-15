@@ -63,7 +63,6 @@ const SignIn = ({ theme }) => {
         try {
             const result = await axios.post(url, { email, password })
             //if authenticated, save returned token in session storage
-            
             if (result.status !== 200) {
                 throw new Error(result.data)
             } 

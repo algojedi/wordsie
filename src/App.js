@@ -7,15 +7,16 @@ import Welcome from './pages/welcome/welcome'
 import Main from './pages/main/main'
 import { Switch, Route } from 'react-router-dom'
 import AuthContext from './contexts/authContext'
+import CartContext from './contexts/cartContext'
+
 import axios from 'axios'
 import api from './api/api'
 
 function App() {
     const context = useContext(AuthContext)
-
+    const cartContext = useContext(CartContext)
     const fetchUser = async (token) => {
         try {
-           
             const getUsrUrl = `${api.url}profile/`
             // token exists in DB... fetch user from a different api endpoint
             // const jsonData = await fetch(getUsrUrl + userId, {
@@ -26,21 +27,15 @@ function App() {
                     Authorization: token
                 }
             })
-            console.log({jsonData})
+            console.log({ jsonData })
             const user = await jsonData.json()
 
-            console.log({user})
+            console.log({ user })
             if (user && user.email) {
-                // context.setAuthenticated(true)
                 const { name, email, _id, cart } = user
                 context.setUser({ name, email, _id })
-                // context.setCart({ cart })
-                context.setCart( cart )
-
-            } else {
-                // context.setAuthenticated(false)
-            }
-                //console.log({cart})
+                cartContext.setCart(cart)
+            } 
         } catch (error) {
             console.log(error.message)
             return
@@ -48,7 +43,7 @@ function App() {
     }
     useEffect(() => {
         const token = window.sessionStorage.getItem('token')
-        if (!token) return 
+        if (!token) return
         fetchUser(token)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -59,7 +54,7 @@ function App() {
             <Switch>
                 <Route exact path='/' component={Welcome} />
                 <Route path='/signin'>
-                    {context.user ? <Main /> : <SignIn /> }
+                    {context.user ? <Main /> : <SignIn />}
                 </Route>
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />

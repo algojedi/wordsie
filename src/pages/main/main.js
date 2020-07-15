@@ -16,6 +16,7 @@ import { TextField } from '@material-ui/core'
 import AlertDialog from '../../components/alert/delete-alert'
 import './main.css'
 import api from '../../api/api'
+import CartContext from '../../contexts/cartContext'
 
 const styles = (theme) => ({
     searchbarContainer: {
@@ -25,10 +26,6 @@ const styles = (theme) => ({
         maxWidth: 500,
         margin: 15
     },
-    // mainContainer: {
-    //   width: "30%",
-    //   margin: "10 auto",
-    // },
     listTitle: {
         padding: 24, // the padding applied to expansion panels by default
         paddingBottom: 8,
@@ -70,11 +67,10 @@ const styles = (theme) => ({
     }
 })
 
+//classes coming from withStyles HOC
 const Main = ({ classes }) => {
-    //classes coming from withStyles HOC
-
-    const wordSearchUrl = `${api.url}define?word=`
     const history = useHistory()
+    const cartContext = useContext(CartContext)
     const context = useContext(AuthContext)
     //word is the current word to search
     const [word, setWord] = useState('')
@@ -85,6 +81,7 @@ const Main = ({ classes }) => {
     const [invalidEntry, setInvalidEntry] = useState(false)
     //state to track whether use should be allowed to enter the displayed word into cart
     const [invalidCartEntry, setInvalidCartEntry] = useState(true)
+    const wordSearchUrl = `${api.url}define?word=`
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -126,13 +123,12 @@ const Main = ({ classes }) => {
                 }
             })
             if (result.data && result.status === 200) {
-                context.addWordToCart(result.data)
+                cartContext.addWordToCart(result.data)
                 setInvalidCartEntry(true) //user can not continually add same word
                 setShowDefinition(false)
             }
         } catch (err) {
             console.log(err)
-            //'response' in err ? console.log(err.response.data.message) : console.log(err);
         }
     }
     return (
@@ -189,7 +185,7 @@ const Main = ({ classes }) => {
                             </Typography>
                             <AlertDialog />
                         </Box>
-                        <WordCart words={context.cart} />
+                        <WordCart words={cartContext.cart} />
                     </>
                 ) : (
                     <Typography

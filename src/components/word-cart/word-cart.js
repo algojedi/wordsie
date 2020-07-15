@@ -10,7 +10,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import Button from '@material-ui/core/Button'
 import api from '../../api/api'
 import axios from 'axios'
-import AuthContext from '../../contexts/authContext'
+import CartContext from '../../contexts/cartContext'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function WordCart() {
-    const { cart, removeWordFromCart } = useContext(AuthContext); 
+    const { cart, removeWordFromCart } = useContext(CartContext); 
     const classes = useStyles()
     const [expanded, setExpanded] = React.useState(false)
     if (!cart) return null
