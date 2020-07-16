@@ -8,8 +8,6 @@ import Main from './pages/main/main'
 import { Switch, Route } from 'react-router-dom'
 import AuthContext from './contexts/authContext'
 import CartContext from './contexts/cartContext'
-
-import axios from 'axios'
 import api from './api/api'
 
 function App() {
@@ -27,10 +25,8 @@ function App() {
                     Authorization: token
                 }
             })
-            console.log({ jsonData })
             const user = await jsonData.json()
 
-            console.log({ user })
             if (user && user.email) {
                 const { name, email, _id, cart } = user
                 context.setUser({ name, email, _id })

@@ -40,7 +40,6 @@ export const cartReducer = (state, action) => {
         case REMOVE_WORD:
             return removeWordFromCart(action.payload, state)
         case SET_CART:
-            console.log({ payload: action.payload })
             return action.payload
         default:
             return state
@@ -60,7 +59,6 @@ export const CartContextProvider = ({ children }) => {
   };
 
   const setCart = (newCart) => {
-    console.log({newCart})
     dispatch({ type: SET_CART, payload: newCart });
   };
 

@@ -12,11 +12,9 @@ import AuthContext from "../../contexts/authContext";
 
 const useStyles = makeStyles(theme => ({
 
-  //const styles = theme => ({
   root: {
     //modifies the card component
     minWidth: 275,
-    //height: 500,
     maxWidth: 400,
     borderWidth: 0,
   },
@@ -86,7 +84,6 @@ const Welcome = ({ history, theme }) => {
               className={classes.btn}
               onClick={() => history.push("/main")}
               size="medium"
-              //color="secondary"
             >
               Enter site
             </Button>

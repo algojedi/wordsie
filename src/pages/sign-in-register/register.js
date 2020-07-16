@@ -15,6 +15,7 @@ import Copyright from "../../components/copyright/copyright";
 import AuthContext from "../../contexts/authContext";
 import axios from "axios";
 import api from "../../api/api";
+import CartContext from "../../contexts/cartContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Register = ({ history }) => {
   const classes = useStyles();
-
+  const cartContext = useContext(CartContext)
   const context = useContext(AuthContext);
 
   const url = `${api.url}register`;
@@ -60,8 +61,7 @@ const Register = ({ history }) => {
         window.sessionStorage.setItem("token", token);
         setErrorMsg("");
         context.setUser({ name, email, _id: id });
-        // context.setCart({ cart: [] });
-        context.setCart([])
+        cartContext.setCart([])
         history.push("/main");
       } else {
         setErrorMsg("invalid username or password");

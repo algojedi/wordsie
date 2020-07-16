@@ -18,6 +18,7 @@ import axios from 'axios'
 import AuthContext from '../../contexts/authContext'
 import Copyright from '../../components/copyright/copyright'
 import api from '../../api/api'
+import CartContext from '../../contexts/cartContext'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,7 +51,7 @@ const saveTokenInSession = (token) => {
 const SignIn = ({ theme }) => {
     const classes = useStyles(theme)
     const context = useContext(AuthContext)
-
+    const cartContext = useContext(CartContext)
     const url = `${api.url}login`
     const getUsrUrl = `${api.url}profile/`
     const [email, setEmail] = useState('')
@@ -81,7 +82,7 @@ const SignIn = ({ theme }) => {
                 const { name, email, cart } = user
                 setErrorMsg('')
                 context.setUser({ name, email, userId })
-                context.setCart( cart )
+                cartContext.setCart( cart )
             } else {
                 setErrorMsg('incorrect username or password')
             }

@@ -1,6 +1,4 @@
-import React, { useState, useReducer, createContext } from "react";
-// import api from "../api/api";
-// import axios from "axios";
+import React, { useState, createContext } from "react";
 export const ADD_WORD = "ADD_WORD";
 export const REMOVE_WORD = "REMOVE_WORD";
 export const SET_CART = "SET_CART";
