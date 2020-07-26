@@ -9,6 +9,7 @@ import { Switch, Route } from 'react-router-dom'
 import AuthContext from './contexts/authContext'
 import CartContext from './contexts/cartContext'
 import api from './api/api'
+import FourZeroFour from './pages/404/404'
 
 function App() {
     const context = useContext(AuthContext)
@@ -54,6 +55,7 @@ function App() {
                 </Route>
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />
+                <Route component={FourZeroFour} />
             </Switch>
         </div>
     )
