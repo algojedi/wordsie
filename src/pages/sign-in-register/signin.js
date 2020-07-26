@@ -66,7 +66,7 @@ const SignIn = ({ theme }) => {
             //if authenticated, save returned token in session storage
             if (result.status !== 200) {
                 throw new Error(result.data)
-            } 
+            }
             const { userId, token } = result.data
             saveTokenInSession(token)
             // --- use id to load user ---
@@ -82,13 +82,12 @@ const SignIn = ({ theme }) => {
                 const { name, email, cart } = user
                 setErrorMsg('')
                 context.setUser({ name, email, userId })
-                cartContext.setCart( cart )
+                cartContext.setCart(cart)
             } else {
                 setErrorMsg('incorrect username or password')
             }
         } catch (err) {
-            console.log(err)
-            setErrorMsg('Something went wrong. Please try again later')
+            setErrorMsg('incorrect username or password')
         }
     }
     return (

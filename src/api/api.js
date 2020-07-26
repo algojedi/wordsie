@@ -6,4 +6,3 @@ if (process.env.NODE_ENV === 'development') {
 
 export default { url }
 
-// other values: 'test', 'production'
