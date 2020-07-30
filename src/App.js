@@ -4,6 +4,7 @@ import ButtonAppBar from './components/appbar/button-appbar'
 import SignIn from './pages/sign-in-register/signin'
 import Register from './pages/sign-in-register/register'
 import Welcome from './pages/welcome/welcome'
+import Account from './pages/account/account'
 import Main from './pages/main/main'
 import { Switch, Route } from 'react-router-dom'
 import AuthContext from './contexts/authContext'
@@ -55,7 +56,9 @@ function App() {
                 </Route>
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />
+                <Route path='/account' component={Account}/> 
                 <Route component={FourZeroFour} />
+                
             </Switch>
         </div>
     )
