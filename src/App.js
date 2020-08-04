@@ -11,6 +11,7 @@ import AuthContext from './contexts/authContext'
 import CartContext from './contexts/cartContext'
 import api from './api/api'
 import FourZeroFour from './pages/404/404'
+import Quiz from './pages/quiz/quiz'
 
 function App() {
     const context = useContext(AuthContext)
@@ -57,6 +58,7 @@ function App() {
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />
                 <Route path='/account' component={Account}/> 
+                <Route path='/quiz' component={Quiz}/>
                 <Route component={FourZeroFour} />
                 
             </Switch>

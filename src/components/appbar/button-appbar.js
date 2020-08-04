@@ -19,6 +19,7 @@ import { useHistory, Link } from 'react-router-dom'
 import authContext from '../../contexts/authContext'
 import api from '../../api/api'
 import axios from 'axios'
+import './button-appbar.css'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
     },
     fullList: {
         width: 'auto'
+    },
+    link: {
+        textDecoration: "none",
+        color: "inherit"
     }
+
 }))
 
 export default function ButtonAppBar() {
@@ -94,7 +100,10 @@ export default function ButtonAppBar() {
         >
             <List>
                 {user ? (
+                    <Link to="/quiz" className={classes.link}>
+
                     <DrawerItem text='Quiz' icon={<AssessmentIcon />} />
+                    </Link>
                 ) : null}
                 <DrawerItem text='Contact' icon={<MailIcon />} />
             </List>
@@ -184,104 +193,3 @@ export default function ButtonAppBar() {
         //  </div>
     )
 }
-
-// import React, { useContext } from 'react'
-// import { makeStyles } from '@material-ui/core/styles'
-// import AuthContext from '../../contexts/authContext'
-// import AppBar from '@material-ui/core/AppBar'
-// import Toolbar from '@material-ui/core/Toolbar'
-// import Typography from '@material-ui/core/Typography'
-// import Button from '@material-ui/core/Button'
-// import './button-appbar.css'
-
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         flexGrow: 1,
-//         backgroundColor: '#28536B'
-//     },
-//     menuButton: {
-//         marginRight: theme.spacing(2)
-//     },
-//     title: {
-//         width: 170,
-
-//         marginRight: 'auto',
-//         padding: 5,
-//         cursor: 'pointer'
-//     },
-//     appName_lower: {
-//         lineHeight: 1
-//     }
-// }))
-
-// export default function ButtonAppBar() {
-//     const classes = useStyles()
-//     const context = useContext(AuthContext)
-//     let history = useHistory()
-
-//     return (
-//         <div>
-//             <AppBar elevation={0} className={classes.root} position='static'>
-//                 <Toolbar>
-//                     <Typography
-//                         onClick={() => history.push('/')}
-//                         variant='h6'
-//                         className={classes.title}
-//                     >
-//                         <div className='appName'>Wordsie</div>
-//                         <Typography className={classes.appName_lower}>
-//                             The Word App
-//                         </Typography>
-//                     </Typography>
-//                     {context.user ? (
-//                         <Button color='inherit' onClick={signOut}>
-//                             Sign out
-//                         </Button>
-//                     ) : (
-//                         <Button
-//                             color='inherit'
-//                             onClick={() => history.push('/signin')}
-//                         >
-//                             Sign in
-//                         </Button>
-//                     )}
-//                 </Toolbar>
-//             </AppBar>
-//         </div>
-//     )
-// }
-
-// -----
-
-// const fullList = () => (
-//     <div
-//         className={classes.fullList}
-//         role='presentation'
-//         onClick={toggleDrawer(false)}
-//         onKeyDown={toggleDrawer(false)}
-//     >
-//         <List>
-//             {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-//                 (text, index) => (
-//                     <ListItem button key={text}>
-//                         <ListItemIcon>
-//                             {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-//                         </ListItemIcon>
-//                         <ListItemText primary={text} />
-//                     </ListItem>
-//                 )
-//             )}
-//         </List>
-//         <Divider />
-//         <List>
-//             {['All mail', 'Trash', 'Spam'].map((text, index) => (
-//                 <ListItem button key={text}>
-//                     <ListItemIcon>
-//                         {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-//                     </ListItemIcon>
-//                     <ListItemText primary={text} />
-//                 </ListItem>
-//             ))}
-//         </List>
-//     </div>
-// )
