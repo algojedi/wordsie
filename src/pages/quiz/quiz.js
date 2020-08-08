@@ -6,7 +6,7 @@ import { TextField } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
-import shuffle from 'lodash/shuffle'
+// import shuffle from 'lodash/shuffle'
 
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -82,16 +82,16 @@ function Quiz() {
     const [quizEnded, setQuizEnded] = useState(false)
     const [input, setInput] = useState('')
     const [responses, dispatch] = useReducer(quizReducer, [])
+    const score = useRef(0)
 
     const filteredCart = cart.map((item, i) => {
         return {
             word: item.word,
             def: item.definitions[0].definition
-            // answer: ''
         }
     })
     // const quizCart = shuffle(filteredCart)
-    const quizCart = filteredCart
+    const quizCart = filteredCart // quiz cart contains the list of words to test
     if (!quizCart.length) return <h3>No words in cart to test</h3>
 
     const addResponse = (response) => {
@@ -104,7 +104,7 @@ function Quiz() {
 
     const handleNext = () => {
         if (quizCart.length < questionIndex + 1) {
-            console.log('code running that mean out of bounds')
+            console.log('out of bounds')
             console.log({ responses })
 
             return
@@ -119,6 +119,8 @@ function Quiz() {
         setQuestionIndex((prev) => prev + 1)
         setInput('')
     }
+
+    let isCorrect
     if (quizEnded) {
         return (
             <div>
@@ -127,10 +129,20 @@ function Quiz() {
                     <Card>
                         <CardContent>
                             {responses.map((resp, i) => {
-                                return <h5 key={i}> {resp.response}</h5>
+                                isCorrect = quizCart[i].word === resp.response ? true : false 
+                                if (isCorrect) {
+                                    score.current = score.current + 1
+                                }
+                                return ( 
+                                    <div key={i}>
+                                    <h3>{quizCart[i].word}</h3>
+                                    <h3>the answer is: {isCorrect ? 'correct' : 'incorrect'}</h3>
+                                    <h5 key={i}> {resp.response} </h5>
+                                    </div>)
                             })}
                         </CardContent>
                     </Card>
+                    {`Final score is ${score.current}`}
                 </Container>
             </div>
         )
