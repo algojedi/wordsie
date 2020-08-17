@@ -6,6 +6,7 @@ import { TextField } from '@material-ui/core'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 // import shuffle from 'lodash/shuffle'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -28,21 +29,30 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3)
     },
     error: {
-        color: theme.palette.secondary.dark
+        color: theme.palette.secondary.dark,
+        fontWeight: 'bolder'
     },
     def: {
         marginBottom: '10px'
     },
-    textField: {
-        // margin: theme.spacing(2, 0)
-        // padding: 0
+    correctDisplay: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    muiIcon: {
+        marginLeft: '5px',
+        color: 'green'
     },
     title: {
         margin: theme.spacing(3, 0, 2)
     }
 }))
-function Question({ def, response, input, setInput }) {
+function Question({ def, response, input, setInput, handleResponse }) {
     const classes = useStyles()
+
+    const keyPress = (e) => {
+        if (e.keyCode === 13) handleResponse()
+    }
     return (
         <Card>
             <CardContent>
@@ -56,6 +66,7 @@ function Question({ def, response, input, setInput }) {
                     }}
                     size='small'
                     variant='outlined'
+                    onKeyDown={keyPress}
                     className={classes.textField}
                     value={input}
                 />
@@ -95,7 +106,9 @@ function Quiz() {
     if (!quizCart.length) return <h3>No words in cart to test</h3>
 
     const addResponse = (response) => {
-        console.log(`question index ${questionIndex} inside addResponse.. adding ${response}`)
+        console.log(
+            `question index ${questionIndex} inside addResponse.. adding ${response}`
+        )
         dispatch({
             type: ADD_RESPONSE,
             payload: { index: questionIndex, response }
@@ -125,24 +138,52 @@ function Quiz() {
         return (
             <div>
                 <Container maxWidth='sm'>
-                    <h3>All done, quiz!</h3>
+                    <Typography variant="h3">Quiz Results</Typography>
                     <Card>
+
                         <CardContent>
                             {responses.map((resp, i) => {
-                                isCorrect = quizCart[i].word === resp.response ? true : false 
+                                isCorrect =
+                                    quizCart[i].word === resp.response
+                                        ? true
+                                        : false
                                 if (isCorrect) {
                                     score.current = score.current + 1
                                 }
-                                return ( 
+                                return (
                                     <div key={i}>
-                                    <h3>{quizCart[i].word}</h3>
-                                    <h3>the answer is: {isCorrect ? 'correct' : 'incorrect'}</h3>
-                                    <h5 key={i}> {resp.response} </h5>
-                                    </div>)
+                                        <Typography variant="h5">{quizCart[i].def}</Typography>
+                                        {isCorrect ? (
+                                            <div
+                                                className={
+                                                    classes.correctDisplay
+                                                }
+                                            >
+                                                <p>{quizCart[i].word}</p>
+                                                <CheckCircleOutlineIcon
+                                                    className={classes.muiIcon}
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <Typography className={classes.error}>
+                                                    {resp.response}
+                                                </Typography>
+                                            </div>
+                                        )}
+                                        {i + 1 !== quizCart.length ? (
+                                            <hr />
+                                        ) : null}
+                                    </div>
+                                )
                             })}
                         </CardContent>
+                    <Typography variant="h3">
+                        {`Final score is ${score.current}
+                        out of ${ quizCart.length } = 
+                        ${Math.round((score.current / quizCart.length) * 100)}%`}
+                    </Typography>
                     </Card>
-                    {`Final score is ${score.current}`}
                 </Container>
             </div>
         )
@@ -163,6 +204,7 @@ function Quiz() {
                         input={input}
                         setInput={setInput}
                         def={quizCart[questionIndex].def}
+                        handleResponse={handleNext}
                     />
                 </div>
 

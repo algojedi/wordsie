@@ -20,7 +20,6 @@ function App() {
         try {
             const getUsrUrl = `${api.url}profile/`
             // token exists in DB... fetch user from a different api endpoint
-            // const jsonData = await fetch(getUsrUrl + userId, {
             const jsonData = await fetch(getUsrUrl, {
                 method: 'get',
                 headers: {
