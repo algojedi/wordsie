@@ -10,11 +10,17 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline'
 // import shuffle from 'lodash/shuffle'
 
 import { makeStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 // actions for quiz reducer
 const ADD_RESPONSE = 'ADD_RESPONSE'
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -26,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.secondary.main
     },
     nextBtn: {
-        marginTop: theme.spacing(3)
+        margin: theme.spacing(3, 0)
     },
     error: {
         color: theme.palette.secondary.dark,
@@ -44,7 +50,10 @@ const useStyles = makeStyles((theme) => ({
         color: 'green'
     },
     title: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(3, 0)
+    },
+    finalScore: {
+        margin: theme.spacing(3, 0)
     }
 }))
 function Question({ def, response, input, setInput, handleResponse }) {
@@ -61,7 +70,6 @@ function Question({ def, response, input, setInput, handleResponse }) {
                 </Typography>
                 <TextField
                     onChange={(e) => {
-                        // response.current = e.target.value
                         setInput(e.target.value)
                     }}
                     size='small'
@@ -106,9 +114,6 @@ function Quiz() {
     if (!quizCart.length) return <h3>No words in cart to test</h3>
 
     const addResponse = (response) => {
-        console.log(
-            `question index ${questionIndex} inside addResponse.. adding ${response}`
-        )
         dispatch({
             type: ADD_RESPONSE,
             payload: { index: questionIndex, response }
@@ -117,13 +122,10 @@ function Quiz() {
 
     const handleNext = () => {
         if (quizCart.length < questionIndex + 1) {
-            console.log('out of bounds')
-            console.log({ responses })
-
             return
         }
         // store the user's answer
-        addResponse(input)
+        addResponse(input.toLowerCase())
         if (quizCart.length === questionIndex + 1) {
             setQuizEnded(true)
             setInput('')
@@ -137,10 +139,11 @@ function Quiz() {
     if (quizEnded) {
         return (
             <div>
-                <Container maxWidth='sm'>
-                    <Typography variant="h3">Quiz Results</Typography>
+                <Container maxWidth='sm' className={classes.container}>
+                    <Typography variant='h5' className={classes.title}>
+                        Quiz Results
+                    </Typography>
                     <Card>
-
                         <CardContent>
                             {responses.map((resp, i) => {
                                 isCorrect =
@@ -152,7 +155,9 @@ function Quiz() {
                                 }
                                 return (
                                     <div key={i}>
-                                        <Typography variant="h5">{quizCart[i].def}</Typography>
+                                        <Typography>
+                                            {quizCart[i].def}
+                                        </Typography>
                                         {isCorrect ? (
                                             <div
                                                 className={
@@ -166,7 +171,9 @@ function Quiz() {
                                             </div>
                                         ) : (
                                             <div>
-                                                <Typography className={classes.error}>
+                                                <Typography
+                                                    className={classes.error}
+                                                >
                                                     {resp.response}
                                                 </Typography>
                                             </div>
@@ -178,19 +185,30 @@ function Quiz() {
                                 )
                             })}
                         </CardContent>
-                    <Typography variant="h3">
-                        {`Final score is ${score.current}
-                        out of ${ quizCart.length } = 
-                        ${Math.round((score.current / quizCart.length) * 100)}%`}
-                    </Typography>
                     </Card>
+                    <Typography variant='h5' className={classes.finalScore}>
+                        {`Final score is ${score.current}
+                        out of ${quizCart.length} 
+                        (${Math.round(
+                            (score.current / quizCart.length) * 100
+                        )}%)`}
+                    </Typography>
+                    <Link to='main'>
+                        <Button
+                            className={classes.nextBtn}
+                            variant='contained'
+                            color='primary'
+                        >
+                            Back to Word Cart
+                        </Button>
+                    </Link>
                 </Container>
             </div>
         )
     }
     return (
         <React.Fragment>
-            <Container maxWidth='sm'>
+            <Container maxWidth='sm' className={classes.container}>
                 <Typography
                     className={classes.title}
                     component='h1'
