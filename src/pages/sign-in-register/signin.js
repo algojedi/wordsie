@@ -44,8 +44,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const saveTokenInSession = (token) => {
-    window.sessionStorage.setItem('token', token)
+const saveTokensInSession = (accessToken, refreshToken) => {
+    // window.sessionStorage.setItem('token', token)
+    window.localStorage.setItem('accessToken', accessToken)
+    window.localStorage.setItem('refreshToken', refreshToken)
 }
 
 const SignIn = ({ theme }) => {
@@ -67,21 +69,23 @@ const SignIn = ({ theme }) => {
             if (result.status !== 200) {
                 throw new Error(result.data)
             }
-            const { userId, token } = result.data
-            saveTokenInSession(token)
-            // --- use id to load user ---
+            // const { userId, token } = result.data
+            const { accessToken, refreshToken } = result.data
+            saveTokensInSession(accessToken, refreshToken)
+            // --- use token to load user ---
             const jsonData = await fetch(getUsrUrl, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token
+                    Authorization: `bearer ${accessToken}`
                 }
             })
             const user = await jsonData.json()
             if (user && user.email) {
                 const { name, email, cart } = user
                 setErrorMsg('')
-                context.setUser({ name, email, userId })
+                // TODO: no need to save user id
+                context.setUser({ name, email, userId : 99 })
                 cartContext.setCart(cart)
             } else {
                 setErrorMsg('incorrect username or password')

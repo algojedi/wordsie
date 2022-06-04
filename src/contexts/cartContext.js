@@ -20,7 +20,7 @@ const addWordToCart = (wordInfo, state) => {
     return updatedCart
 }
 
-//state is word cart
+// state is word cart
 const removeWordFromCart = (wordId, state) => {
     // TODO: make post request to api  to remove word
     const updatedCart = state.filter((el) => {
