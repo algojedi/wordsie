@@ -18,6 +18,7 @@ import axios from 'axios'
 import AuthContext from '../../contexts/authContext'
 import Copyright from '../../components/copyright/copyright'
 import api from '../../api/api'
+import { saveTokensInSession } from '../../util/tokens'
 import CartContext from '../../contexts/cartContext'
 
 const useStyles = makeStyles((theme) => ({
@@ -44,11 +45,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const saveTokensInSession = (accessToken, refreshToken) => {
-    // window.sessionStorage.setItem('token', token)
-    window.localStorage.setItem('accessToken', accessToken)
-    window.localStorage.setItem('refreshToken', refreshToken)
-}
 
 const SignIn = ({ theme }) => {
     const classes = useStyles(theme)
@@ -69,18 +65,22 @@ const SignIn = ({ theme }) => {
             if (result.status !== 200) {
                 throw new Error(result.data)
             }
-            // const { userId, token } = result.data
+
             const { accessToken, refreshToken } = result.data
             saveTokensInSession(accessToken, refreshToken)
-            // --- use token to load user ---
-            const jsonData = await fetch(getUsrUrl, {
+
+            // use token to load user - should go through interceptor 
+            const jsonData = await axios(getUsrUrl) 
+            /*, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `bearer ${accessToken}`
                 }
             })
-            const user = await jsonData.json()
+            */
+
+            const user = jsonData.data
             if (user && user.email) {
                 const { name, email, cart } = user
                 setErrorMsg('')
@@ -92,8 +92,10 @@ const SignIn = ({ theme }) => {
             }
         } catch (err) {
             setErrorMsg('incorrect username or password')
+            console.log(err.message)
         }
     }
+
     return (
         <Container component='main' maxWidth='xs'>
             <CssBaseline />
