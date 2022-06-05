@@ -36,6 +36,7 @@ axios.interceptors.request.use(
         console.log('token retrieved by interceptor: ', token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
+            config.headers.contentType = 'application/json'
         }
         return config
     },
