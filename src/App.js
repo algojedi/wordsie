@@ -7,6 +7,7 @@ import Welcome from './pages/welcome/welcome'
 import Account from './pages/account/account'
 import Main from './pages/main/main'
 import { Switch, Route } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import AuthContext from './contexts/authContext'
 import CartContext from './contexts/cartContext'
 import api from './api/api'
@@ -46,20 +47,20 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    console.log ({ user : context.user})
     return (
         <div className='App'>
             <ButtonAppBar />
             <Switch>
                 <Route exact path='/' component={Welcome} />
                 <Route path='/signin'>
-                    {context.user ? <Main /> : <SignIn />}
+                    {context.user ? <Redirect to='/main'/> : <SignIn />}
                 </Route>
                 <Route path='/main' component={Main} />
                 <Route path='/register' component={Register} />
                 <Route path='/account' component={Account}/> 
                 <Route path='/quiz' component={Quiz}/>
                 <Route component={FourZeroFour} />
-                
             </Switch>
         </div>
     )

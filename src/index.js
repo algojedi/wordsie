@@ -43,18 +43,22 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-let counter = 0;
+
+let counter = 0; // just added as a precaution to prevent infinite loop
+
 // intercept the response and retry if the token is expired
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
     const originalRequest = error.config;
+    // TODO: change on server side to send 401 instead, and handle in here
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refreshToken');
       counter++;
       if (counter > 2) {
         console.log('counter exceeded');
+        counter = 0
         return Promise.reject(error);
       }
       console.log( { refreshToken })
@@ -79,11 +83,11 @@ axios.interceptors.response.use(
             window.localStorage.setItem('accessToken', token);
             originalRequest.headers.Authorization = `Bearer ${token}`;
             return axios(originalRequest);
-          }).catch((err) => {
+          })
+         /* let components handle the error  
+         .catch((err) => {
             console.log(err.message);
-            // TODO: redirect to login page
-            // window.location.href = '/login';
-            })
+            }) */
       );
     } else {
       return Promise.reject(error);

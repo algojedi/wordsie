@@ -71,7 +71,7 @@ const SignIn = ({ theme }) => {
 
             // use token to load user - should go through interceptor 
             const jsonData = await axios(getUsrUrl) 
-            /*, {
+            /*, { // handled by interceptor
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
