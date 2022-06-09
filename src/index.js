@@ -49,46 +49,37 @@ let counter = 0; // just added as a precaution to prevent infinite loop
 // intercept the response and retry if the token is expired
 axios.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const originalRequest = error.config;
-    // TODO: change on server side to send 401 instead, and handle in here
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refreshToken');
       counter++;
       if (counter > 2) {
         console.log('counter exceeded');
-        counter = 0
+        counter = 0;
         return Promise.reject(error);
       }
-      console.log( { refreshToken })
-        // use fetch to avoid infinite loop
-        var myHeaders = new Headers();
-        myHeaders.append('Content-Type', 'application/json');
-      return (
-        fetch(`${api.url}refresh`, {
-          method: 'POST',
-          headers: myHeaders,
-          mode: 'cors',
-          body: JSON.stringify({ refreshToken }),
-        }).then(result => result.json())
-          // axios
-          //     .post(`${api.url}refresh`, { refreshToken })
-          .then((response) => {
-            // const tokens = JSON.parse(res.text);
-            console.log({ response }); // response.token is access token
-            // saveTokensInSession(response.data.accessToken, response.data.refreshToken);
-            const { token } = response
-            if (!token) throw new Error('no token returned');
-            window.localStorage.setItem('accessToken', token);
-            originalRequest.headers.Authorization = `Bearer ${token}`;
-            return axios(originalRequest);
-          })
-         /* let components handle the error  
-         .catch((err) => {
-            console.log(err.message);
-            }) */
-      );
+      // use fetch to avoid infinite loop
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      const result = await fetch(`${api.url}refresh`, {
+        method: 'POST',
+        headers: myHeaders,
+        mode: 'cors',
+        body: JSON.stringify({ refreshToken }),
+      });
+      const response = result.json();
+      const { token } = response;
+      if (!token) {
+        const tokenErr = new Error('no token returned');
+        tokenErr.status = 401;
+        return Promise.reject(tokenErr);
+      }
+      window.localStorage.setItem('accessToken', token);
+      originalRequest.headers.Authorization = `Bearer ${token}`;
+      // retry the request with new token set
+      return axios(originalRequest);
     } else {
       return Promise.reject(error);
     }

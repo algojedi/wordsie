@@ -99,8 +99,11 @@ const Main = ({ classes }) => {
         setWord('');
       }
     } catch (err) {
-      console.log(err);
       setInvalidEntry(true);
+      // todo: ensure that invalid entry does not come with 401
+      if (err.status === 401) {
+        context.setUser(null);
+      }
     }
   };
 
