@@ -70,31 +70,15 @@ export default function WordCart() {
     const handleRemove = async (wordId) => {
         //remove word from db
 
-        const url = `${api.url}removeWord`
+        const url = `${api.url}word/${wordId}`
         try {
-            const token = window.sessionStorage.getItem('token')
-
-            if (!token) {
-                //return early if no token
-                console.log("missing token from session. Can't remove word")
-                return
-            }
-            const result = await axios({
-                url,
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token
-                },
-                data: {
-                    //data gets received as body
-                    wordId
-                }
-            })
+            const result = await axios.delete(url)
+            console.log( { resultfromDelete : result } )
             if (result.status === 200) {
                 removeWordFromCart(wordId)
             }
         } catch (err) {
+            // TODO: display error message in ui
             console.log(err)
         }
     }

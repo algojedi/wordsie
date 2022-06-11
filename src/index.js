@@ -44,7 +44,6 @@ axios.interceptors.request.use(
   },
 );
 
-let counter = 0; // just added as a precaution to prevent infinite loop
 
 // intercept the response and retry if the token is expired
 axios.interceptors.response.use(
@@ -54,24 +53,26 @@ axios.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem('refreshToken');
-      counter++;
-      if (counter > 2) {
-        console.log('counter exceeded');
-        counter = 0;
+      if (!refreshToken) {
+        console.log('no refresh token');
         return Promise.reject(error);
       }
       // use fetch to avoid infinite loop
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
+      // change to using different instance of axios 
+      // test for loop prevention on client / server
       const result = await fetch(`${api.url}refresh`, {
         method: 'POST',
         headers: myHeaders,
         mode: 'cors',
         body: JSON.stringify({ refreshToken }),
       });
-      const response = result.json();
+      const response = await result.json();
+      console.log( { result, response } );
       const { token } = response;
       if (!token) {
+        console.log('unable to refresh token');
         const tokenErr = new Error('no token returned');
         tokenErr.status = 401;
         return Promise.reject(tokenErr);
@@ -79,6 +80,8 @@ axios.interceptors.response.use(
       window.localStorage.setItem('accessToken', token);
       originalRequest.headers.Authorization = `Bearer ${token}`;
       // retry the request with new token set
+      console.log('retrying request with new token');
+      console.log( { originalRequest } );
       return axios(originalRequest);
     } else {
       return Promise.reject(error);
