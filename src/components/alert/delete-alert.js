@@ -36,30 +36,21 @@ export default function AlertDialog() {
     }
 
     const handleDeleteList = async () => {
-        const url = `${api.url}emptyCart`
+        const url = `${api.url}cart`
         try {
-            const token = window.sessionStorage.getItem('token')
-
-            if (!token) {
-                return
-            }
-            const result = await axios({
-                url,
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token
-                }
-            })
+            const result = await axios.delete(url)
             if (result.data && result.status === 200) {
                 context.setCart([])
+                console.log('cart items deleted')
             }
         } catch (err) {
-            console.log(err)
+            console.log('error trying to empty cart', err.message)
+            // TODO: display error message in ui, probably in a invalid token    
             //'response' in err ? console.log(err.response.data.message) : console.log(err);
         }
         setOpen(false)
     }
+
     return (
         <React.Fragment>
             <Button className={classes.trashBtn} onClick={handleClickOpen}>
