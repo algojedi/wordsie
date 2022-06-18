@@ -84,20 +84,6 @@ const Main = ({ classes }) => {
   const [invalidCartEntry, setInvalidCartEntry] = useState(true);
   const wordSearchUrl = `${api.url}?word=`;
 
-  useEffect(() => {
-    if (!context.user) {
-      // make api call to get user profile if user is logged out
-      const url = `${api.url}profile`;
-      axios
-        .get(url)
-        .then((res) => {
-          context.setUser(res.data);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    }
-  }, [context]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
