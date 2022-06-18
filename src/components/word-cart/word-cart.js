@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginBottom: 50
     },
+    expansionPanel: {
+        padding: theme.spacing(0, 2),
+    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         flexBasis: '33.33%',
@@ -92,6 +95,7 @@ export default function WordCart() {
                 return (
                     <ExpansionPanel
                         key={i}
+                        className={classes.expansionPanel}
                         expanded={expanded === w.word}
                         onChange={handleChange(w.word)}
                     >
@@ -100,7 +104,8 @@ export default function WordCart() {
                                 {w.word}
                             </Typography>
                             <Typography className={classes.secondaryHeading}>
-                                {w.part.toLowerCase()}
+                                {w.part.toLowerCase() === 'adjective' ? 
+                                'adj.' : w.part.toLowerCase() }
                             </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails className={classes.details}>
