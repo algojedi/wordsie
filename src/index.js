@@ -8,7 +8,6 @@ import { AuthContextProvider } from './contexts/authContext';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import { CartContextProvider } from './contexts/cartContext';
-import { saveTokensInSession } from './util/tokens';
 import axios from 'axios';
 import api from './api/api';
 
@@ -32,7 +31,6 @@ const theme = createMuiTheme({
 axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
-    console.log('token retrieved by interceptor: ', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
       config.headers.contentType = 'application/json';
@@ -69,10 +67,8 @@ axios.interceptors.response.use(
         body: JSON.stringify({ refreshToken }),
       });
       const response = await result.json();
-      console.log( { result, response } );
       const { token } = response;
       if (!token) {
-        console.log('unable to refresh token');
         const tokenErr = new Error('no token returned');
         tokenErr.status = 401;
         return Promise.reject(tokenErr);
@@ -80,8 +76,6 @@ axios.interceptors.response.use(
       window.localStorage.setItem('accessToken', token);
       originalRequest.headers.Authorization = `Bearer ${token}`;
       // retry the request with new token set
-      console.log('retrying request with new token');
-      console.log( { originalRequest } );
       return axios(originalRequest);
     } else {
       return Promise.reject(error);

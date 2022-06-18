@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../../contexts/authContext';
 import Button from '@material-ui/core/Button';
@@ -48,6 +48,7 @@ const styles = (theme) => ({
   listTitleContainer: {
     display: 'flex',
     justifyContent: 'space-between',
+    padding: '0px 24px',
   },
   root: {
     display: 'flex',
@@ -83,6 +84,21 @@ const Main = ({ classes }) => {
   const [invalidCartEntry, setInvalidCartEntry] = useState(true);
   const wordSearchUrl = `${api.url}?word=`;
 
+  useEffect(() => {
+    if (!context.user) {
+      // make api call to get user profile if user is logged out
+      const url = `${api.url}profile`;
+      axios
+        .get(url)
+        .then((res) => {
+          context.setUser(res.data);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  }, [context]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (word === '') {
@@ -101,7 +117,7 @@ const Main = ({ classes }) => {
     } catch (err) {
       setInvalidEntry(true);
       if (err.status === 401) {
-        console.log({ err })
+        console.log({ err });
         context.setUser(null);
       }
     }
@@ -179,7 +195,7 @@ const Main = ({ classes }) => {
               >
                 Your Word List
               </Typography>
-              <AlertDialog />
+              { cartContext.cart.length > 0 ? <AlertDialog /> : null}
             </Box>
             <WordCart words={cartContext.cart} />
           </>

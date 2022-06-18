@@ -46,7 +46,6 @@ export default function AlertDialog() {
         } catch (err) {
             console.log('error trying to empty cart', err.message)
             // TODO: display error message in ui, probably in a invalid token    
-            //'response' in err ? console.log(err.response.data.message) : console.log(err);
         }
         setOpen(false)
     }

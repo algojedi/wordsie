@@ -111,7 +111,7 @@ function Quiz() {
     })
     // const quizCart = shuffle(filteredCart)
     const quizCart = filteredCart // quiz cart contains the list of words to test
-    if (!quizCart.length) return <h3>No words in cart to test</h3>
+    if (!quizCart.length) return <h3 className='center-text'>No words in cart to test</h3>
 
     const addResponse = (response) => {
         dispatch({
@@ -186,7 +186,7 @@ function Quiz() {
                             })}
                         </CardContent>
                     </Card>
-                    <Typography variant='h5' className={classes.finalScore}>
+                    <Typography variant='h4' className={classes.finalScore}>
                         {`Final score is ${score.current}
                         out of ${quizCart.length} 
                         (${Math.round(
