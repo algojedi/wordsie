@@ -8,7 +8,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import "./404.css";
 import { Container } from "@material-ui/core";
-import light from "../../assets/lightbulb.svg";
+// import light from "../../assets/lightbulb.svg";
+import Icon from "../../assets/icon"
 
 const useStyles = makeStyles(theme => ({
 
@@ -63,7 +64,8 @@ const FourZeroFour = ({history, theme }) => {
     <div>
       <Container className={classes.wrapper} maxWidth="lg">
         <div className="imgWrapper">
-          <img src={light} className="img" alt="light bulb" />
+          {/* <img src={light} className="img" alt="light bulb" /> */}
+          <Icon />
         </div>
         <Card className={classes.root} variant="outlined">
           <CardContent>
