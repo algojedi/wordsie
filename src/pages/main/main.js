@@ -82,7 +82,7 @@ const Main = ({ classes }) => {
   const [invalidEntry, setInvalidEntry] = useState(false);
   //state to track whether use should be allowed to enter the displayed word into cart
   const [invalidCartEntry, setInvalidCartEntry] = useState(true);
-  const wordSearchUrl = `${api.url}?word=`;
+  const wordSearchUrl = `${api.url}word?word=`;
 
 
   const handleSubmit = async (e) => {
